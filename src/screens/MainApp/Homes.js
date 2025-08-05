@@ -1,8 +1,8 @@
 // src/screens/Home.js or homes.js
 
-import React, { useEffect } from 'react';
-import { View, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 
 export default function Home() {
   const navigation = useNavigation();
