@@ -1,8 +1,8 @@
 // OtpVerification.js
-import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 import { getAuth, signInWithPhoneNumber } from 'firebase/auth';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { app } from '../../config.js/firebase';
 
 const auth = getAuth(app);
@@ -10,11 +10,12 @@ const auth = getAuth(app);
 export default function OtpVerification({ route, navigation }) {
   const { value: phoneNumber } = route.params;
   const recaptchaVerifier = useRef(null);
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState(['', '', '', '', '', '']);
   const [verification, setVerification] = useState(null);
   const [error, setError] = useState('');
+  const inputRefs = useRef([...Array(6)].map(() => React.createRef()));
 
-  const sendOTP = async () => {
+  const sendOTP = React.useCallback(async () => {
     try {
       const confirmation = await signInWithPhoneNumber(auth, `+1${phoneNumber}`, recaptchaVerifier.current);
       setVerification(confirmation);
@@ -23,11 +24,16 @@ export default function OtpVerification({ route, navigation }) {
       console.error('OTP error:', err);
       Alert.alert('Error sending OTP', err.message || 'Unexpected error');
     }
-  };
+  }, [phoneNumber]);
 
   const confirmCode = async () => {
     try {
-      await verification.confirm(code); // ✅ confirm the code
+      const otpCode = code.join('');
+      if (otpCode.length !== 6) {
+        setError('Please enter all 6 digits');
+        return;
+      }
+      await verification.confirm(otpCode); // ✅ confirm the code
       Alert.alert('Phone verified!');
       navigation.navigate('ResetPassword', { phone: phoneNumber });
     } catch (err) {
@@ -38,7 +44,7 @@ export default function OtpVerification({ route, navigation }) {
 
   useEffect(() => {
     sendOTP();
-  }, []);
+  }, [sendOTP]);
 
   return (
     <View style={styles.container}>
@@ -50,17 +56,33 @@ export default function OtpVerification({ route, navigation }) {
       <Text style={styles.title}>OTP Verification</Text>
       <Text style={styles.subtitle}>Enter the OTP sent to +1{phoneNumber}</Text>
 
-      <TextInput
-        style={[styles.input, error && styles.errorInput]}
-        placeholder="Enter OTP"
-        keyboardType="number-pad"
-        value={code}
-        onChangeText={(text) => {
-          setCode(text);
-          setError('');
-        }}
-        maxLength={6}
-      />
+      <View style={styles.otpContainer}>
+        {code.map((digit, index) => (
+          <TextInput
+            key={index}
+            ref={inputRefs.current[index]}
+            style={[styles.otpInput, error && styles.errorInput]}
+            keyboardType="number-pad"
+            maxLength={1}
+            value={digit}
+            onChangeText={(text) => {
+              const newCode = [...code];
+              newCode[index] = text;
+              setCode(newCode);
+              setError('');
+              
+              if (text.length === 1 && index < 5) {
+                inputRefs.current[index + 1].current.focus();
+              }
+            }}
+            onKeyPress={({ nativeEvent }) => {
+              if (nativeEvent.key === 'Backspace' && !digit && index > 0) {
+                inputRefs.current[index - 1].current.focus();
+              }
+            }}
+          />
+        ))}
+      </View>
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
       <TouchableOpacity style={styles.button} onPress={confirmCode}>
@@ -74,6 +96,22 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, justifyContent: 'center', backgroundColor: '#fff' },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
   subtitle: { fontSize: 14, color: '#777', marginBottom: 30 },
+  otpContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+    paddingHorizontal: 20,
+  },
+  otpInput: {
+    width: 45,
+    height: 45,
+    borderWidth: 1,
+    borderColor: '#D0D0D0',
+    borderRadius: 8,
+    textAlign: 'center',
+    fontSize: 20,
+    backgroundColor: '#f5f5f5',
+  },
   input: {
     borderWidth: 1,
     borderColor: '#D0D0D0',

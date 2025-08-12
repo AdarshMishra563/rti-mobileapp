@@ -20,7 +20,7 @@ const categories = [
   { icon: 'utensils', label: 'Food' },
   { icon: 'heart', label: 'Lifestyle' },
   { icon: 'users', label: 'Community' },
-  { icon: 'graduation-cap', label: 'career' },
+  { icon: 'graduation-cap', label: 'Education' },
   { icon: 'briefcase', label: 'Career' },
   { icon: 'mobile-alt', label: 'Mobile' },
   { icon: 'tv', label: 'Television' },
@@ -46,11 +46,18 @@ export default function Categories() {
         {categories.map((cat, index) => {
           // Use Ionicons for 'newspaper-outline', FontAwesome5 for others
           const isNewsToday = cat.icon === 'newspaper-outline';
+          const isEducation = cat.label === 'Education';
+          let onPress;
+          if (isNewsToday) {
+            onPress = () => navigation.navigate('NStartScreen');
+          } else if (isEducation) {
+            onPress = () => navigation.navigate('Bookmark');
+          }
           return (
             <TouchableOpacity
               key={index}
               style={styles.card}
-              onPress={isNewsToday ? () => navigation.navigate('NStartScreen') : undefined}
+              onPress={onPress}
             >
               {isNewsToday ? (
                 <Ionicons name="newspaper-outline" size={24} color="#000" />

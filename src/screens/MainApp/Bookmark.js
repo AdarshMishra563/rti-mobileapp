@@ -114,7 +114,7 @@ export default function BookmarkScreen() {
           <Ionicons name="bookmark" size={24} color="#b5b4b4ff" />
 
           </View>
-          <Text style={[styles.tabLabel, { color: '#0c0c0cff' }]}>Bookmark</Text>
+          <Text style={[styles.tabLabel, { color: '#aaa' }]}>Bookmark</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('ProfilePreview')} style={styles.tabItem}>

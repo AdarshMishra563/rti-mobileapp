@@ -1,27 +1,25 @@
-import React, { useState, useEffect, useContext } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  SafeAreaView,
-  Linking,
-} from 'react-native';
-import { useNavigation, useIsFocused } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-// import { UserContext } from './UserContext';
-// import React, { useState, useEffect, useContext } from 'react';
-import { UserContext } from './UserContext'; 
+// screens/ProfilePreview.js
 
+import { Ionicons } from '@expo/vector-icons';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useContext, useEffect, useState } from 'react';
+import {
+  Alert,
+  FlatList,
+  Image,
+  Linking,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { UserContext } from './UserContext';
 
 export default function ProfilePreview({ route }) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  // const { userData } = useContext(UserContext);
   const { userData, userPosts } = useContext(UserContext);
-
 
   const [profile, setProfile] = useState({
     image: null,
@@ -30,41 +28,66 @@ export default function ProfilePreview({ route }) {
     email: '',
     phone: '',
     website: '',
-    bio: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    bio: 'Write about you...',
     followers: 0,
     following: 0,
   });
 
   const [activeTab, setActiveTab] = useState('Recent');
 
-  useEffect(() => {
-    if (route.params) {
-      setProfile((prev) => ({ ...prev, ...route.params }));
-    } else if (userData) {
-      setProfile((prev) => ({ ...prev, ...userData }));
+  // Fetch profile from API
+  const fetchProfile = async () => {
+    try {
+      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODkyZTAwNmY2YmM3ZGYyMWFkYmEwYjkiLCJpYXQiOjE3NTQ0NTYwNzB9.aE3nuOHI1ZbFKOVtRdTRW0-84jXhTYqYIP_eL1ENTx0';
+      if (!token) {
+        Alert.alert('Error', 'No token found. Please log in again.');
+        return;
+      }
+
+      const res = await fetch('http://34.100.231.173:3000/api/v1/profile/fetchprofile', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const errData = await res.json();
+        console.error('API Error:', errData);
+        Alert.alert('Error', errData.message || 'Failed to fetch profile');
+        return;
+      }
+
+      const data = await res.json();
+      console.log('Fetched profile:', data);
+
+      if (data.user) {
+        setProfile((prev) => ({
+          ...prev,
+          username: data.user.userName || '',
+          fullName: data.user.fullName || '',
+          email: data.user.email || '',
+          phone: data.user.phone ? String(data.user.phone) : '',
+        }));
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+      Alert.alert('Error', 'Unable to fetch profile. Please try again.');
     }
-  }, [route.params, isFocused, userData]);
+  };
 
-  // const myPosts = [
-  //   {
-  //     id: '3',
-  //     category: 'Travel',
-  //     title: 'Bali plans to reopen to international tourists in September',
-  //     author: profile.fullName,
-  //     time: '1w ago',
-  //     image: 'https://via.placeholder.com/100',
-  //   },
-  //   {
-  //     id: '4',
-  //     category: 'Health',
-  //     title: 'Healthy Living: Diet and Exercise Tips',
-  //     author: profile.fullName,
-  //     time: '2w ago',
-  //     image: 'https://via.placeholder.com/100',
-  //   },
-  // ];
+  useEffect(() => {
+    if (isFocused) {
+      if (route.params) {
+        setProfile((prev) => ({ ...prev, ...route.params }));
+      } else if (userData) {
+        setProfile((prev) => ({ ...prev, ...userData }));
+      }
+      fetchProfile();
+    }
+  }, [isFocused, route.params, userData]);
+
   const myPosts = userPosts;
-
 
   const recentNews = [
     {
@@ -174,9 +197,7 @@ export default function ProfilePreview({ route }) {
 
       {activeTab === 'News' && (
         <FlatList
-          // data={myPosts}
           data={[...myPosts].reverse()}
-
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
           contentContainerStyle={{ paddingHorizontal: 20 }}
@@ -197,13 +218,13 @@ export default function ProfilePreview({ route }) {
           <Ionicons name="person" size={24} color="#aaa" />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-  style={styles.fab}
-  onPress={() => navigation.navigate('AddPostScreen')}
->
-  <Ionicons name="add" size={30} color="#fff" />
-</TouchableOpacity>
 
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => navigation.navigate('AddPostScreen')}
+      >
+        <Ionicons name="add" size={30} color="#fff" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -283,21 +304,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   fab: {
-  position: 'absolute',
-  bottom: 80, // adjust based on bottom tab height
-  right: 20,
-  width: 60,
-  height: 60,
-  borderRadius: 30,
-  backgroundColor: '#007bff',
-  justifyContent: 'center',
-  alignItems: 'center',
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.3,
-  shadowRadius: 4,
-  elevation: 5,
-},
-
+    position: 'absolute',
+    bottom: 80,
+    right: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#007bff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
 });
-

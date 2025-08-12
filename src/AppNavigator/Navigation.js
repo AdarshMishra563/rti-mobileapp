@@ -51,6 +51,9 @@ import LanguageScreen from '../screens/LanguageScreen';
 import JoinRTIScreen from '../screens/JoinRTIScreen';
 import RTIExpressForm from '../screens/RTIExpressForm';
 import RTIActivistForm from '../screens/RTIActivistForm';
+import ALoginScreen from '../screens/ALoginScreen';
+import PublishNewsScreen from '../screens/PublishNewsScreen';
+import NewsList from '../screens/NewsList';
 const Stack = createNativeStackNavigator();
 
 export default function RootNavigator() {
@@ -103,6 +106,9 @@ export default function RootNavigator() {
         <Stack.Screen name="JoinRTIScreen" component={JoinRTIScreen} />
         <Stack.Screen name="RTIExpressForm" component={RTIExpressForm} />
         <Stack.Screen name="RTIActivistForm" component={RTIActivistForm} />
+        <Stack.Screen name="ALoginScreen" component={ALoginScreen} />
+        <Stack.Screen name="PublishNewsScreen" component={PublishNewsScreen} />
+        <Stack.Screen name="NewsList" component={NewsList} />
 
         
       </Stack.Navigator>

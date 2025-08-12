@@ -1,19 +1,27 @@
 // screens/FillProfile.js
 
-import React, { useState } from 'react';
-import {
-  View, Text, StyleSheet, TouchableOpacity, Image, TextInput,
-} from 'react-native';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { Ionicons, Feather } from '@expo/vector-icons';
+import { useState } from 'react';
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 export default function FillProfile({ navigation }) {
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODkyZTAwNmY2YmM3ZGYyMWFkYmEwYjkiLCJpYXQiOjE3NTQ0NTYwNzB9.aE3nuOHI1ZbFKOVtRdTRW0-84jXhTYqYIP_eL1ENTx0";
   const [image, setImage] = useState(null);
   const [username, setUsername] = useState('');
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
+  // Pick image from gallery
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -27,19 +35,53 @@ export default function FillProfile({ navigation }) {
     }
   };
 
-  const handleNext = () => {
+  // Send data to API
+  const handleNext = async () => {
     if (!email || !phone) {
-      alert('Email and Phone Number are required.');
+      Alert.alert('Error', 'Email and Phone Number are required.');
       return;
     }
 
-    navigation.navigate('ProfilePreview', {
-      image,
-      username,
-      fullName,
-      email,
-      phone,
-    });
+    try {
+      const response = await fetch(
+        'http://34.100.231.173:3000/api/v1/profile/updateprofile',
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            userName: username,
+            fullName: fullName,
+            email: email,
+            phone: Number(phone),
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('API Error:', errorData);
+        Alert.alert('Error', errorData.message || 'Failed to update profile');
+        return;
+      }
+
+      const data = await response.json();
+      console.log('Profile updated:', data);
+
+      // Navigate to preview after successful update
+      navigation.navigate('ProfilePreview', {
+        image,
+        username,
+        fullName,
+        email,
+        phone,
+      });
+    } catch (error) {
+      console.error('Network error:', error);
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    }
   };
 
   return (
@@ -57,10 +99,31 @@ export default function FillProfile({ navigation }) {
         )}
       </TouchableOpacity>
 
-      <Input label="Username" value={username} onChangeText={setUsername} icon="person-outline" />
-      <Input label="Full Name" value={fullName} onChangeText={setFullName} icon="person" />
-      <Input label="Email Address*" value={email} onChangeText={setEmail} icon="mail-outline" />
-      <Input label="Phone Number*" value={phone} onChangeText={setPhone} icon="call-outline" />
+      <Input
+        label="Username"
+        value={username}
+        onChangeText={setUsername}
+        icon="person-outline"
+      />
+      <Input
+        label="Full Name"
+        value={fullName}
+        onChangeText={setFullName}
+        icon="person"
+      />
+      <Input
+        label="Email Address*"
+        value={email}
+        onChangeText={setEmail}
+        icon="mail-outline"
+      />
+      <Input
+        label="Phone Number*"
+        value={phone}
+        onChangeText={setPhone}
+        icon="call-outline"
+        keyboardType="numeric"
+      />
 
       <TouchableOpacity style={styles.nextBtn} onPress={handleNext}>
         <Text style={styles.nextBtnText}>Next</Text>
@@ -69,7 +132,7 @@ export default function FillProfile({ navigation }) {
   );
 }
 
-function Input({ label, value, onChangeText, icon }) {
+function Input({ label, value, onChangeText, icon, keyboardType = 'default' }) {
   return (
     <View style={styles.inputWrapper}>
       <Ionicons name={icon} size={20} color="#888" style={styles.icon} />
@@ -78,6 +141,7 @@ function Input({ label, value, onChangeText, icon }) {
         style={styles.input}
         value={value}
         onChangeText={onChangeText}
+        keyboardType={keyboardType}
       />
     </View>
   );
@@ -88,21 +152,31 @@ const styles = StyleSheet.create({
   heading: { fontSize: 22, fontWeight: 'bold', marginBottom: 30, alignSelf: 'center' },
   imageContainer: { alignSelf: 'center', marginBottom: 30 },
   placeholderCircle: {
-    width: 120, height: 120, borderRadius: 60,
-    backgroundColor: '#f0f0f0', justifyContent: 'center', alignItems: 'center',
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#f0f0f0',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   profileImage: { width: 120, height: 120, borderRadius: 60 },
   inputWrapper: {
-    flexDirection: 'row', alignItems: 'center',
-    backgroundColor: '#f9f9f9', borderRadius: 10,
-    paddingHorizontal: 10, paddingVertical: 12,
-    marginBottom: 15, elevation: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f9',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 12,
+    marginBottom: 15,
+    elevation: 1,
   },
   icon: { marginRight: 10 },
   input: { flex: 1, fontSize: 16 },
   nextBtn: {
-    marginTop: 20, backgroundColor: '#007bff',
-    paddingVertical: 14, alignItems: 'center',
+    marginTop: 20,
+    backgroundColor: '#007bff',
+    paddingVertical: 14,
+    alignItems: 'center',
     borderRadius: 10,
   },
   nextBtnText: { color: '#fff', fontSize: 16, fontWeight: '600' },

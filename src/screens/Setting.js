@@ -109,7 +109,7 @@ export default function Settings() {
         <Text style={styles.profileName}>{username}</Text>
       </View>
 
-      {renderOption('Home', <Ionicons name="home-outline" size={20} color="#555" />, () => navigation.navigate('Home'))}
+      {renderOption('Home', <Ionicons name="home-outline" size={20} color="#555" />, () => navigation.navigate('FullNews'))}
       {renderOption('Select Language', <Feather name="globe" size={20} color="#555" />, () => setLanguageModalVisible(true), selectedLanguage)}
       {renderOption('Select Location', <Ionicons name="location-outline" size={20} color="#555" />, () => setLocationModalVisible(true), selectedLocation)}
 

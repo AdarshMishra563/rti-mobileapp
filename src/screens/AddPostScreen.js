@@ -1,16 +1,16 @@
-import React, { useState, useContext } from 'react';
+import { Feather } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import { useContext, useState } from 'react';
 import {
-  View,
+  Alert,
+  Image,
+  ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  Image,
-  StyleSheet,
-  Alert,
-  ScrollView,
+  View,
 } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { Ionicons, Feather } from '@expo/vector-icons';
 import { UserContext } from './UserContext'; // 🔁 Adjust the path as needed
 
 export default function AddPostScreen({ navigation }) {

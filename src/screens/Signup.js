@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import Checkbox from 'expo-checkbox';
-import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../config.js/firebase'; // adjust if needed
-
-// import { signInWithEmailAndPassword } from 'firebase/auth';
-// import { auth } from '../../config/firebase'; // ✅ Correct path to firebase.js
+import { useNavigation } from '@react-navigation/native';
+import Checkbox from 'expo-checkbox';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useState } from 'react';
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { auth } from '../../config.js/firebase';
 
 export default function Signup() {
   const navigation = useNavigation();

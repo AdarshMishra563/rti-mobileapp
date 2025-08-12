@@ -1,76 +1,73 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet, Linking } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CITY_URLS = {
-  Mumbai: 'https://www.google.com/maps/search/?api=1&query=Mumbai',
-  Bangalore: 'https://www.google.com/maps/search/?api=1&query=Bangalore',
-  Kolkata: 'https://www.google.com/maps/search/?api=1&query=Kolkata',
-  Chennai: 'https://www.google.com/maps/search/?api=1&query=Chennai',
-  Hyderabad: 'https://www.google.com/maps/search/?api=1&query=Hyderabad',
-  Delhi: 'https://www.google.com/maps/search/?api=1&query=Delhi',
-  Pune: 'https://www.google.com/maps/search/?api=1&query=Pune',
-  Ahmedabad: 'https://www.google.com/maps/search/?api=1&query=Ahmedabad',
-};
+export default function LocationSearch({ navigation, route }) {
+  const [news, setNews] = useState([]);
+  const [locationList, setLocationList] = useState(['Hyderabad', 'Pune', 'Mumbai', 'Delhi']);
 
-const CITIES = Object.keys(CITY_URLS);
+  const { title, coverImage, content, district } = route.params || {};
 
-export default function LocationSearch() {
-  const [query, setQuery] = useState('');
+  useEffect(() => {
+    loadNews();
 
-  const filteredCities = CITIES.filter(city =>
-    city.toLowerCase().includes(query.toLowerCase())
-  );
+    // Add the passed district if it's not already in the list
+    if (district && !locationList.includes(district)) {
+      setLocationList(prev => [...prev, district]);
+    }
 
-  const handleCitySelect = (city) => {
-    const url = CITY_URLS[city];
-    Linking.canOpenURL(url).then(supported => {
-      if (supported) {
-        Linking.openURL(url);
-      } else {
-        alert("Can't open this URL");
-      }
-    });
+    // Save the newly published news to AsyncStorage
+    if (title && content && district) {
+      const newNews = { title, coverImage, content, location: district };
+      saveNews(newNews);
+    }
+  }, []);
+
+  const loadNews = async () => {
+    try {
+      const storedNews = await AsyncStorage.getItem('NEWS');
+      if (storedNews) setNews(JSON.parse(storedNews));
+    } catch (error) {
+      console.log('Error loading news:', error);
+    }
   };
 
+  const saveNews = async (newItem) => {
+    try {
+      const updatedNews = [...news, newItem];
+      setNews(updatedNews);
+      await AsyncStorage.setItem('NEWS', JSON.stringify(updatedNews));
+    } catch (error) {
+      console.log('Error saving news:', error);
+    }
+  };
+
+  const filteredNews = (loc) =>
+    news.filter((n) => n.location.toLowerCase() === loc.toLowerCase());
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Search Location</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Search a city..."
-        value={query}
-        onChangeText={setQuery}
-      />
-
-      <FlatList
-        data={filteredCities}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.cityItem} onPress={() => handleCitySelect(item)}>
-            <Text style={styles.cityText}>{item}</Text>
-          </TouchableOpacity>
-        )}
-      />
+    <View style={{ flex: 1, padding: 20 }}>
+      {locationList.map((loc) => (
+        <TouchableOpacity
+          key={loc}
+          style={styles.cityButton}
+          onPress={() =>
+            navigation.navigate('NewsList', { news: filteredNews(loc), location: loc })
+          }
+        >
+          <Text style={styles.cityText}>{loc}</Text>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-  title: { fontSize: 22, fontWeight: 'bold', marginBottom: 10 },
-  input: {
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    marginBottom: 20,
+  cityButton: {
+    padding: 15,
+    backgroundColor: '#eee',
+    marginBottom: 10,
+    borderRadius: 6,
   },
-  cityItem: {
-    paddingVertical: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  cityText: { fontSize: 16 },
+  cityText: { fontWeight: 'bold', fontSize: 16 },
 });

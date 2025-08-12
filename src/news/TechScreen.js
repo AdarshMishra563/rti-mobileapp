@@ -1,6 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function TechScreen({ navigation }) {
   return (
@@ -10,12 +9,15 @@ export default function TechScreen({ navigation }) {
         <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
           <Ionicons name="menu" size={24} color="#2F6BFF" />
         </TouchableOpacity>
-        <Text style={styles.logoText}>News2Day</Text>
+        <View style={styles.logoRow}>
+          <Ionicons name="newspaper-outline" size={22} color="#2F6BFF" style={{ marginRight: 6 }} />
+          <Text style={styles.logoText}>News2Day</Text>
+        </View>
         <View style={styles.iconGroup}>
           <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
             <Ionicons name="chatbubble-ellipses-outline" size={20} color="#2F6BFF" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('NNotifications')}>
+          <TouchableOpacity onPress={() => navigation.navigate('NNotifications')} style={{ marginLeft: 16 }}>
             <Ionicons name="notifications-outline" size={20} color="#2F6BFF" />
           </TouchableOpacity>
         </View>
@@ -70,6 +72,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  logoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   logoText: {
     fontSize: 20,
     color: '#2F6BFF',
@@ -110,6 +116,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderTopWidth: 1,
     borderColor: '#ccc',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: '100%',
+    backgroundColor: '#fff',
   },
   tabItem: {
     alignItems: 'center',

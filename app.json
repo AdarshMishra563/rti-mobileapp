@@ -43,8 +43,15 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "eff117de-9f00-4712-a7db-e6f241ce3e84"
+        "projectId": "30202c2e-a6dc-466a-87be-817d273a6f06"
       }
+    },
+    "owner": "anjaliannareddy",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/30202c2e-a6dc-466a-87be-817d273a6f06"
     }
   }
 }
