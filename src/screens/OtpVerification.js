@@ -1,4 +1,4 @@
-// OtpVerification.js
+
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 import { getAuth, signInWithPhoneNumber } from 'firebase/auth';
 import React, { useEffect, useRef, useState } from 'react';
@@ -33,7 +33,7 @@ export default function OtpVerification({ route, navigation }) {
         setError('Please enter all 6 digits');
         return;
       }
-      await verification.confirm(otpCode); // ✅ confirm the code
+      await verification.confirm(otpCode); 
       Alert.alert('Phone verified!');
       navigation.navigate('ResetPassword', { phone: phoneNumber });
     } catch (err) {
