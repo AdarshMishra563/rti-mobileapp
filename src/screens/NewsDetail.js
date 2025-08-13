@@ -33,7 +33,7 @@ export default function NewsDetail({ navigation }) {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.header}>
             <Image
-              source={require('../Assets/Ellipse.png')} // your logo
+              source={require('../Assets/Ellipse.png')} 
               style={styles.logo}
             />
             <View style={{ marginLeft: 8 }}>
@@ -48,7 +48,7 @@ export default function NewsDetail({ navigation }) {
 
           {/* hero image */}
           <Image
-            source={require('../Assets/image1.png')} // your detail image
+            source={require('../Assets/image1.png')} 
             style={styles.hero}
             resizeMode="cover"
           />
