@@ -1,4 +1,4 @@
-// // src/screens/UserContext.js
+
 import React, { createContext, useState } from 'react';
 
 export const UserContext = createContext();
@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
     following: 0,
   });
 
-  const [userPosts, setUserPosts] = useState([]); // ✅ add posts state
+  const [userPosts, setUserPosts] = useState([]); 
 
   const incrementFollowers = () =>
     setUserData((prev) => ({ ...prev, followers: prev.followers + 1 }));
@@ -24,8 +24,8 @@ export const UserProvider = ({ children }) => {
         setUserData,
         incrementFollowers,
         incrementFollowing,
-        userPosts,       // ✅ expose posts
-        setUserPosts,    // ✅ expose setter
+        userPosts,       
+        setUserPosts,    
       }}
     >
       {children}
