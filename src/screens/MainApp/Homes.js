@@ -1,4 +1,4 @@
-// src/screens/Home.js or homes.js
+
 
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
