@@ -44,7 +44,7 @@ export default function Categories() {
       {/* Category Grid */}
       <ScrollView contentContainerStyle={styles.grid}>
         {categories.map((cat, index) => {
-          // Use Ionicons for 'newspaper-outline', FontAwesome5 for others
+          
           const isNewsToday = cat.icon === 'newspaper-outline';
           const isEducation = cat.label === 'Education';
           let onPress;
