@@ -71,8 +71,7 @@ export default function Publisher({ route, navigation }) {
     </View>
   );
 
-  // This function is used when opening this screen as a modal inside notification
-  // To close modal or goBack depending on navigation
+  
   const handleClose = () => {
     if (navigation.canGoBack()) {
       navigation.goBack();
