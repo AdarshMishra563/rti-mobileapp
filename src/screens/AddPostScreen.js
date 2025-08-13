@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { UserContext } from './UserContext'; // 🔁 Adjust the path as needed
+import { UserContext } from './UserContext';
 
 export default function AddPostScreen({ navigation }) {
   const [postImage, setPostImage] = useState(null);
@@ -21,7 +21,7 @@ export default function AddPostScreen({ navigation }) {
   const [videoLink, setVideoLink] = useState('');
   const [article, setArticle] = useState('');
 
-  const { userData, userPosts, setUserPosts } = useContext(UserContext); // ✅ Use context
+  const { userData, userPosts, setUserPosts } = useContext(UserContext); 
 
   const pickPostImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -53,9 +53,9 @@ export default function AddPostScreen({ navigation }) {
       time: 'Just now',
     };
 
-    setUserPosts([newPost, ...userPosts]); // ✅ Add to context
+    setUserPosts([newPost, ...userPosts]); 
     Alert.alert('Success', 'Your post has been published!');
-    navigation.navigate('ProfilePreview'); // 🔁 Adjust if your route is different
+    navigation.navigate('ProfilePreview'); 
   };
 
   return (
