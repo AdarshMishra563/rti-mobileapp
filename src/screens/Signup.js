@@ -22,7 +22,7 @@ export default function Signup() {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       console.log('Login successful:', user.email);
-      navigation.replace('FullNews'); // ✅ Your next screen
+      navigation.replace('FullNews'); 
     } catch (error) {
       console.error('Login failed:', error.message);
       Alert.alert('Login Failed', error.message);
