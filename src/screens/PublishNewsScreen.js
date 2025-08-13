@@ -7,7 +7,7 @@ export default function PublishNewsScreen({ navigation }) {
   const [title, setTitle] = useState('');
   const [coverImage, setCoverImage] = useState(null);
   const [content, setContent] = useState('');
-  const [district, setDistrict] = useState(''); // <-- Added district state
+  const [district, setDistrict] = useState(''); 
   const richText = useRef();
 
   const pickImage = async () => {
@@ -27,12 +27,12 @@ export default function PublishNewsScreen({ navigation }) {
   };
 
   const handlePublish = () => {
-    if (!title || !content || !district) {  // <-- validation includes district
+    if (!title || !content || !district) {  
       Alert.alert('Error', 'Please enter title, content, and district');
       return;
     }
 
-    // Navigate and pass all data including district
+    
     navigation.navigate('LocationSearch', { title, coverImage, content, district });
     Alert.alert('Success', 'News Published!');
   };
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     fontSize: 16,
   },
-  districtInput: { // <-- new style for district input
+  districtInput: { 
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 6,
