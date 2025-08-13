@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../config.js/firebase'; // ✅ Adjust the path if needed
+import { auth } from '../../config.js/firebase'; 
 import { useNavigation } from '@react-navigation/native';
 
 export default function Register() {
@@ -20,7 +20,7 @@ export default function Register() {
       const user = userCredential.user;
       console.log('User registered:', user.email);
       Alert.alert('Success', 'User registered successfully!');
-      navigation.replace('FullNews'); // ✅ Go to main screen
+      navigation.replace('FullNews'); 
     } catch (error) {
       console.error('Signup error:', error.message);
       Alert.alert('Signup Error', error.message);
