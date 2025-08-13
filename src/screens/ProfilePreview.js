@@ -1,4 +1,4 @@
-// screens/ProfilePreview.js
+
 
 import { Ionicons } from '@expo/vector-icons';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -35,7 +35,7 @@ export default function ProfilePreview({ route }) {
 
   const [activeTab, setActiveTab] = useState('Recent');
 
-  // Fetch profile from API
+  
   const fetchProfile = async () => {
     try {
       const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODkyZTAwNmY2YmM3ZGYyMWFkYmEwYjkiLCJpYXQiOjE3NTQ0NTYwNzB9.aE3nuOHI1ZbFKOVtRdTRW0-84jXhTYqYIP_eL1ENTx0';
