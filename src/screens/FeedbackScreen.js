@@ -25,10 +25,10 @@ export default function FeedbackScreen({ navigation }) {
       return;
     }
 
-    // Simulate a successful submission
+    
     setModalVisible(true);
 
-    // Reset form (optional)
+    
     setName('');
     setMobile('');
     setEmail('');
