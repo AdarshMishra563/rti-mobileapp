@@ -11,12 +11,12 @@ export default function LocationSearch({ navigation, route }) {
   useEffect(() => {
     loadNews();
 
-    // Add the passed district if it's not already in the list
+  
     if (district && !locationList.includes(district)) {
       setLocationList(prev => [...prev, district]);
     }
 
-    // Save the newly published news to AsyncStorage
+    
     if (title && content && district) {
       const newNews = { title, coverImage, content, location: district };
       saveNews(newNews);
