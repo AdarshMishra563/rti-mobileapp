@@ -14,7 +14,7 @@ const { width, height } = Dimensions.get('window');
 const slides = [
   {
     key: '1',
-    // TODO: put your actual image path here
+    
     image: require('../Assets/NewsImage.png'),
     title: 'Lorem Ipsum is simply dummy',
     desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
@@ -49,7 +49,7 @@ export default function Onboarding({ navigation }) {
     if (index < slides.length - 1) {
       ref.current?.scrollToIndex({ index: index + 1 });
     } else {
-      navigation.replace('LanguageScreen'); // Navigate to the next screen
+      navigation.replace('LanguageScreen'); 
     }
   };
 
