@@ -9,7 +9,7 @@ import {
   TextInput,
 } from 'react-native';
 
-import { UserContext } from '../screens/UserContext'; // Adjust the path as needed
+import { UserContext } from '../screens/UserContext'; 
 
 const sources = [
   { name: 'BBC News', image: require('../Assets/Ellipse.png') },
