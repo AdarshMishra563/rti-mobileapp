@@ -70,7 +70,7 @@ export default function FillProfile({ navigation }) {
       const data = await response.json();
       console.log('Profile updated:', data);
 
-      // Navigate to preview after successful update
+  
       navigation.navigate('ProfilePreview', {
         image,
         username,
