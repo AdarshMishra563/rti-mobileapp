@@ -1,4 +1,4 @@
-// NStartScreen.js
+
 
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
@@ -11,7 +11,7 @@ export default function NStartScreen() {
     <View style={styles.container}>
       {/* Logo Section */}
       <Image
-        source={require('../Assets/LOGO.png')} // replace with your actual logo path
+        source={require('../Assets/LOGO.png')} 
         style={styles.logo}
         resizeMode="contain"
       />
@@ -20,7 +20,7 @@ export default function NStartScreen() {
       {/* Get Started Button */}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('NSignInScreen')} // change to 'SignIn' or whatever your screen name is
+        onPress={() => navigation.navigate('NSignInScreen')} 
       >
         <Text style={styles.buttonText}>Get started ➔</Text>
       </TouchableOpacity>
