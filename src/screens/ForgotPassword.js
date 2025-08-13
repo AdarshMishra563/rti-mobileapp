@@ -7,11 +7,11 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import { auth } from '../../config.js/firebase'; // ✅ Make sure the path is correct
+import { auth } from '../../config.js/firebase';
 import { sendPasswordResetEmail } from 'firebase/auth';
 
 export default function ForgotPassword({ navigation }) {
-  const [method, setMethod] = useState('email'); // 'email' or 'phone'
+  const [method, setMethod] = useState('email'); 
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
 
