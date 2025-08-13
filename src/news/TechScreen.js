@@ -26,7 +26,7 @@ export default function TechScreen({ navigation }) {
       {/* News Card */}
       <View style={styles.card}>
         <Image
-          source={require('../Assets/mobile.png')} // Replace with your actual image file
+          source={require('../Assets/mobile.png')} 
           style={styles.image}
           resizeMode="cover"
         />
