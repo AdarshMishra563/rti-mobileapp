@@ -19,7 +19,7 @@ import {
 
 function TabIcon({ name, label, onPress, active }) {
   const color = active ? '#1478FF' : '#888';
-  // Use FontAwesome for these icons, Ionicons for the rest
+  
   const fontAwesomeIcons = ['graduation-cap', 'line-chart', 'tv', 'image', 'user'];
   let IconComponent = Ionicons;
   if (fontAwesomeIcons.includes(name)) {
@@ -37,7 +37,7 @@ export default function Settings() {
   const navigation = useNavigation();
   const route = useRoute();
 
-  // Accepting updated props
+  
   const [username, setUsername] = useState('User Name');
   const [profileImage, setProfileImage] = useState(null);
 
@@ -50,7 +50,7 @@ export default function Settings() {
   const languages = ['English', 'Telugu', 'Hindi', 'Tamil'];
   const locations = ['Delhi', 'Mumbai', 'Bangalore', 'Chennai'];
 
-  // ✅ Update name/image from route params
+  
   useEffect(() => {
     if (route.params?.username) {
       setUsername(route.params.username);
