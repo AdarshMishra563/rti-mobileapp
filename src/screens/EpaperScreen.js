@@ -1,4 +1,4 @@
-// EpaperScreen.js
+
 import React from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
