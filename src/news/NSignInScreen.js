@@ -1,11 +1,11 @@
-// NSignInScreen.js
+
 
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
-import { signInWithEmailAndPassword } from 'firebase/auth'; // ✅ Firebase import
-import { auth } from '../../config.js/firebase'; // ✅ Firebase config import
+import { signInWithEmailAndPassword } from 'firebase/auth'; 
+import { auth } from '../../config.js/firebase'; 
 
 export default function NSignInScreen() {
   const navigation = useNavigation();
@@ -29,11 +29,11 @@ export default function NSignInScreen() {
       return;
     }
 
-    // ✅ Firebase Auth Logic
+  
     if (/^\S+@\S+\.\S+$/.test(input)) {
       try {
         await signInWithEmailAndPassword(auth, input, password);
-        navigation.replace('NHomeScreen'); // or 'FullNews'
+        navigation.replace('NHomeScreen'); 
       } catch (error) {
         Alert.alert('Login Failed', error.message);
       }
