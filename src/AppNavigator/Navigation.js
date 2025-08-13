@@ -1,4 +1,4 @@
-// src/AppNavigator/Navigation.js
+
 
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -25,7 +25,7 @@ import ContactUsScreen from '../screens/ContactUsScreen';
 import ProfilePreview from '../screens/ProfilePreview';
 import AddPostScreen from '../screens/AddPostScreen';
 import EditProfile from '../screens/EditProfile';
-import {UserContext} from '../screens/UserContext'; // Adjust the import path as necessary
+import {UserContext} from '../screens/UserContext'; 
 import ForgotPassword from '../screens/ForgotPassword';
 import OtpVerification from '../screens/OtpVerification';
 import ResetPassword from '../screens/ResetPassword';
