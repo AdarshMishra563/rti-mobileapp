@@ -57,7 +57,7 @@ export default function NSignInScreen() {
     <View style={styles.container}>
       {/* Logo Image */}
       <Image
-        source={require('../Assets/LOGO.png')} // Replace with your actual logo path
+        source={require('../Assets/LOGO.png')} 
         style={styles.logoImage}
         resizeMode="contain"
       />
