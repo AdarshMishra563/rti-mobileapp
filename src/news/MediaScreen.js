@@ -28,7 +28,7 @@ export default function MediaScreen({ navigation }) {
       {/* News Card */}
       <View style={styles.card}>
         <Image
-          source={require('../Assets/fish.png')} // Replace with your local turtle image
+          source={require('../Assets/fish.png')} 
           style={styles.image}
           resizeMode="cover"
         />
