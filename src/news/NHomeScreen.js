@@ -30,7 +30,7 @@ export default function HomeScreen() {
       <ScrollView contentContainerStyle={styles.content}>
         <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('NHomeScreen')}>
           <Image
-            source={require('../Assets/newshom.png')} // <-- Use your actual image here
+            source={require('../Assets/newshom.png')} 
             style={styles.cardImage}
           />
           <Text style={styles.cardTitle}>3 Health Benefits</Text>
