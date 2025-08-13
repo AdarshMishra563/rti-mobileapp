@@ -1,4 +1,4 @@
-// screens/FillProfile.js
+
 
 import { Feather, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -21,7 +21,7 @@ export default function FillProfile({ navigation }) {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
-  // Pick image from gallery
+  
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -35,7 +35,7 @@ export default function FillProfile({ navigation }) {
     }
   };
 
-  // Send data to API
+  
   const handleNext = async () => {
     if (!email || !phone) {
       Alert.alert('Error', 'Email and Phone Number are required.');
