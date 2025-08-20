@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import CitizenVoiceScreen from './CitizenVoice';
 
 export default function JoinRTIScreen({ navigation }) {
   return (
@@ -28,6 +29,15 @@ export default function JoinRTIScreen({ navigation }) {
       >
         <Ionicons name="lock-closed-outline" size={24} color="#000" />
         <Text style={styles.optionText}>Join as Activist</Text>
+        <Ionicons name="chevron-forward" size={24} color="#000" />
+      </TouchableOpacity>
+
+      <TouchableOpacity 
+        style={styles.option}
+        onPress={() => navigation.navigate('CitizenVoice')}
+      >
+        <Ionicons name="voice-outline" size={24} color="#000" />
+        <Text style={styles.optionText}>Citizen Voice</Text>
         <Ionicons name="chevron-forward" size={24} color="#000" />
       </TouchableOpacity>
     </View>

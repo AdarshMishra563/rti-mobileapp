@@ -52,6 +52,10 @@ const LanguageSelector = ({ navigation }) => {
       <TouchableOpacity style={styles.buttonBottom} onPress={handleNext}>
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
+
+      <Text style={{ textAlign: 'center', color: '#888', marginTop: 20, fontSize: 16 }}>
+        More languages Coming Soon..
+      </Text>
     </View>
   );
 };

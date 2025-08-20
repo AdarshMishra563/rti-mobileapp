@@ -1,223 +1,371 @@
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import * as FileSystem from 'expo-file-system';
-import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
+  View, Text, TextInput, TouchableOpacity,
+  ScrollView, StyleSheet, Image, Alert, Platform
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import RNPickerSelect from 'react-native-picker-select';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function RTIActivistForm({ navigation }) {
-  const [form, setForm] = useState({
+const ActivistForm = ({ navigation }) => {
+  const [formData, setFormData] = useState({
     name: '',
-    dob: '',
+    DOB: null,
     gender: '',
-    contactNumber: '',
+    phone: '',
     email: '',
     address: '',
     aadhar: '',
-    designation: 'MEMBER',
-    region: '',
-    previousExperience: '',
-    media: null
+    designation: '',
+    pincode: '',
+    experience: '',
+    media: null,
+    agreed: false,
   });
 
   const [errors, setErrors] = useState({});
-  const [uploading, setUploading] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const handleChange = (field, value) => {
-    setForm({ ...form, [field]: value });
-    setErrors({ ...errors, [field]: '' });
-  };
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODkyYWJhZjhmOGJiZjRhM2ZlYWZjYzMiLCJpYXQiOjE3NTQ0NDI2NzF9.1CsPgPuvQT-noWcNZueq1vEaQGraDOZRuOWhPP-pM_U";
 
   const validate = () => {
-    let newErrors = {};
-    if (!form.name) newErrors.name = 'Required';
-    if (!form.dob) newErrors.dob = 'Required';
-    if (!form.gender) newErrors.gender = 'Required';
-    if (!form.contactNumber.match(/^\d{10}$/)) newErrors.contactNumber = 'Invalid number';
-    if (!form.email.includes('@')) newErrors.email = 'Invalid email';
-    if (!form.aadhar.match(/^\d{12}$/)) newErrors.aadhar = 'Aadhar must be 12 digits';
-    if (!form.media) newErrors.media = 'Image is required';
+    const newErrors = {};
+    const requiredFields = [
+      'name', 'DOB', 'gender', 'phone',
+      'email', 'address', 'aadhar',
+      'designation', 'pincode',
+    ];
+    requiredFields.forEach(field => {
+      if (!formData[field]) newErrors[field] = 'Required';
+    });
+    // Experience can be optional here as per image
+    if (!formData.media) newErrors.media = 'Photo required';
+    if (!formData.agreed) newErrors.agreed = 'You must agree to continue';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const pickMedia = async () => {
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission denied', 'We need access to your gallery to upload a photo.');
+      return;
+    }
+
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
       allowsEditing: true,
-      quality: 0.5
     });
 
     if (!result.canceled) {
-      let localUri = result.assets[0].uri;
-      if (localUri.startsWith('content://')) {
-        const fileInfo = await FileSystem.getInfoAsync(localUri);
-        localUri = fileInfo.uri;
-      }
-      setForm({ ...form, media: localUri });
+      setFormData({ ...formData, media: result.assets[0] });
     }
   };
 
   const handleSubmit = async () => {
     if (!validate()) return;
 
-    setUploading(true);
-
-    const formData = new FormData();
-    formData.append('media', {
-      uri: form.media,
-      type: 'image/jpeg',
-      name: 'photo.jpg'
-    });
-    formData.append('name', form.name);
-    formData.append('DOB', form.dob);
-    formData.append('gender', form.gender);
-    formData.append('email', form.email);
-    formData.append('phone', form.contactNumber);
-    formData.append('address', form.address);
-    formData.append('aadhar', form.aadhar);
-    formData.append('location', form.region);
-    formData.append('designation', form.designation);
-    formData.append('experience', form.previousExperience);
-
     try {
-      const res = await fetch('http://34.100.231.173:3000/api/v1/activist/application', {
-        method: 'POST',
-        headers: { 'Content-Type': 'multipart/form-data' },
-        body: formData
+      const dataToSend = new FormData();
+      Object.keys(formData).forEach(key => {
+        if (key === 'media') {
+          dataToSend.append('media', {
+            uri: Platform.OS === 'ios' ? formData.media.uri.replace('file://', '') : formData.media.uri,
+            name: formData.media.fileName || 'image.jpg',
+            type: formData.media.type || 'image/jpeg',
+          });
+        } else if (key === 'DOB') {
+          dataToSend.append('DOB', formData.DOB.toISOString());
+        } else if (key !== 'agreed') {
+          dataToSend.append(key, formData[key]);
+        }
       });
 
-      const data = await res.json();
+      const response = await fetch('http://34.100.231.173:3000/api/v1/activist/application', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: dataToSend,
+      });
 
-      if (!res.ok) {
-        Alert.alert('Error', JSON.stringify(data));
-      } else {
-        Alert.alert('Success', 'Application submitted successfully');
+      const result = await response.json();
+
+      if (response.ok) {
+        Alert.alert('Success', 'Activist Form Submitted!');
         navigation.navigate('PublishNewsScreen');
+      } else {
+        Alert.alert('Error', result.message || 'Something went wrong');
       }
-    } catch (err) {
-      Alert.alert('Network Error', err.message);
-      console.log('Upload error:', err);
-    } finally {
-      setUploading(false);
+    } catch (error) {
+      Alert.alert('Network Error', error.message);
     }
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>RTI Activist Registration</Text>
-        <Text style={styles.subtitle}>Fill your details below</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.heading}>Activist Form</Text>
 
-        <TouchableOpacity style={styles.imagePicker} onPress={pickMedia}>
-          <Text style={{ color: '#0077B6' }}>{form.media ? 'Change Image' : 'Pick Image'}</Text>
-        </TouchableOpacity>
-        {errors.media && <Text style={styles.error}>{errors.media}</Text>}
+      <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+        {formData.media ? (
+          <Image source={{ uri: formData.media.uri }} style={styles.imagePreview} />
+        ) : (
+          <Ionicons name="camera" size={30} color="#ccc" />
+        )}
+      </TouchableOpacity>
+      {errors.media && <Text style={styles.error}>{errors.media}</Text>}
 
-        <LabeledInput label="Name" placeholder="Enter your full name"
-          icon={<Ionicons name="person-outline" size={20} color="#666" />}
-          value={form.name} onChangeText={(val) => handleChange('name', val)} error={errors.name} />
-
-        <LabeledInput label="Date of Birth" placeholder="DD/MM/YYYY"
-          icon={<Ionicons name="calendar-outline" size={20} color="#666" />}
-          value={form.dob} onChangeText={(val) => handleChange('dob', val)} error={errors.dob} />
-
-        <LabeledInput label="Gender" placeholder="Enter your gender"
-          icon={<Ionicons name="transgender-outline" size={20} color="#666" />}
-          value={form.gender} onChangeText={(val) => handleChange('gender', val)} error={errors.gender} />
-
-        <LabeledInput label="Contact Number" placeholder="Enter your phone number"
-          icon={<Ionicons name="call-outline" size={20} color="#666" />} keyboardType="phone-pad"
-          value={form.contactNumber} onChangeText={(val) => handleChange('contactNumber', val)}
-          error={errors.contactNumber} />
-
-        <LabeledInput label="Email Address" placeholder="Enter your email"
-          icon={<FontAwesome name="envelope" size={20} color="#666" />} keyboardType="email-address"
-          value={form.email} onChangeText={(val) => handleChange('email', val)} error={errors.email} />
-
-        <LabeledInput label="Address" placeholder="Enter your address"
-          icon={<Ionicons name="home-outline" size={20} color="#666" />}
-          value={form.address} onChangeText={(val) => handleChange('address', val)} />
-
-        <LabeledInput label="Aadhar Number" placeholder="12-digit Aadhar number"
-          icon={<Ionicons name="card-outline" size={20} color="#666" />} keyboardType="numeric"
-          value={form.aadhar} onChangeText={(val) => handleChange('aadhar', val)} error={errors.aadhar} />
-
-        <LabeledInput label="Designation" placeholder="MEMBER"
-          icon={<Ionicons name="briefcase-outline" size={20} color="#666" />}
-          value={form.designation} editable={false} />
-
-        <LabeledInput label="Region/Area" placeholder="Your region"
-          icon={<Ionicons name="location-outline" size={20} color="#666" />}
-          value={form.region} onChangeText={(val) => handleChange('region', val)} />
-
-        <LabeledInput label="Previous Experience" placeholder="If any"
-          icon={<Ionicons name="document-text-outline" size={20} color="#666" />}
-          value={form.previousExperience} onChangeText={(val) => handleChange('previousExperience', val)} />
-
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit} disabled={uploading}>
-          <Text style={styles.submitText}>{uploading ? 'Submitting...' : 'Submit'}</Text>
-        </TouchableOpacity>
-
-        <View style={{ marginTop: 20, alignItems: 'center' }}>
-          <Text>Already registered?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('ALoginScreen')}>
-            <Text style={{ color: '#0077B6', fontWeight: 'bold', marginTop: 5 }}>Login here</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
-  );
-}
-
-const LabeledInput = ({
-  label,
-  placeholder,
-  icon,
-  value,
-  onChangeText,
-  error,
-  keyboardType = 'default',
-  secureTextEntry = false,
-  editable = true,
-}) => (
-  <View style={styles.inputWrapper}>
-    <Text style={styles.label}>{label}</Text>
-    <View style={styles.inputRow}>
-      {icon}
+      <Text style={styles.label}>Full Name*</Text>
       <TextInput
-        style={[styles.input, !editable && { backgroundColor: '#eee' }]}
-        placeholder={placeholder}
-        value={value}
-        onChangeText={onChangeText}
-        keyboardType={keyboardType}
-        secureTextEntry={secureTextEntry}
-        editable={editable}
+        placeholder="Wilson Franci"
+        value={formData.name}
+        onChangeText={(text) => setFormData({ ...formData, name: text })}
+        style={styles.input}
       />
-    </View>
-    {error && <Text style={styles.error}>{error}</Text>}
-  </View>
-);
+      {errors.name && <Text style={styles.error}>{errors.name}</Text>}
+
+      <Text style={styles.label}>Date of Birth*</Text>
+      <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
+        <Text style={{ color: formData.DOB ? '#000' : '#999' }}>
+          {formData.DOB ? formData.DOB.toDateString() : 'DD/MM/YYYY'}
+        </Text>
+      </TouchableOpacity>
+      {showDatePicker && (
+        <DateTimePicker
+          mode="date"
+          value={formData.DOB || new Date()}
+          maximumDate={new Date()}
+          onChange={(event, selectedDate) => {
+            setShowDatePicker(false);
+            if (selectedDate) {
+              setFormData({ ...formData, DOB: selectedDate });
+            }
+          }}
+        />
+      )}
+      {errors.DOB && <Text style={styles.error}>{errors.DOB}</Text>}
+
+      <Text style={styles.label}>Gender*</Text>
+      <RNPickerSelect
+        onValueChange={(value) => setFormData({ ...formData, gender: value })}
+        placeholder={{ label: 'Select Gender', value: '' }}
+        value={formData.gender}
+        items={[
+          { label: 'Male', value: 'male' },
+          { label: 'Female', value: 'female' },
+          { label: 'Other', value: 'other' },
+        ]}
+        style={pickerSelectStyles}
+        useNativeAndroidPickerStyle={false}
+        Icon={() => <Ionicons name="chevron-down" size={20} color="gray" />}
+      />
+      {errors.gender && <Text style={styles.error}>{errors.gender}</Text>}
+
+      <Text style={styles.label}>Phone Number*</Text>
+      <TextInput
+        placeholder="+91 98765 43210"
+        keyboardType="phone-pad"
+        value={formData.phone}
+        onChangeText={(text) => setFormData({ ...formData, phone: text })}
+        style={styles.input}
+      />
+      {errors.phone && <Text style={styles.error}>{errors.phone}</Text>}
+
+      <Text style={styles.label}>Email Address*</Text>
+      <TextInput
+        placeholder="example@youremail.com"
+        keyboardType="email-address"
+        value={formData.email}
+        onChangeText={(text) => setFormData({ ...formData, email: text })}
+        style={styles.input}
+      />
+      {errors.email && <Text style={styles.error}>{errors.email}</Text>}
+
+      <Text style={styles.label}>Address*</Text>
+      <TextInput
+        placeholder="D.No 1/1/1234, Area Name, District, State"
+        value={formData.address}
+        onChangeText={(text) => setFormData({ ...formData, address: text })}
+        style={styles.input}
+      />
+      {errors.address && <Text style={styles.error}>{errors.address}</Text>}
+
+      <Text style={styles.label}>Aadhar Number*</Text>
+      <TextInput
+        placeholder="1111-2222-3333"
+        value={formData.aadhar}
+        maxLength={12}
+        onChangeText={(text) => setFormData({ ...formData, aadhar: text })}
+        style={styles.input}
+      />
+      {errors.aadhar && <Text style={styles.error}>{errors.aadhar}</Text>}
+
+      <Text style={styles.label}>Designation (District)*</Text>
+      <RNPickerSelect
+        onValueChange={(value) => setFormData({ ...formData, designation: value })}
+        placeholder={{ label: 'Select District', value: '' }}
+        value={formData.designation}
+        items={[
+          { label: 'Anantapur', value: 'Anantapur' },
+          { label: 'Kurnool', value: 'Kurnool' },
+          { label: 'Guntur', value: 'Guntur' },
+          { label: 'Kadapa', value: 'Kadapa' },
+          { label: 'Vijayawada', value: 'Vijayawada' },
+        ]}
+        style={pickerSelectStyles}
+        useNativeAndroidPickerStyle={false}
+        Icon={() => <Ionicons name="chevron-down" size={20} color="gray" />}
+      />
+      {errors.designation && <Text style={styles.error}>{errors.designation}</Text>}
+
+      <Text style={styles.label}>Pincode*</Text>
+      <TextInput
+        placeholder="515 201"
+        value={formData.pincode}
+        onChangeText={(text) => setFormData({ ...formData, pincode: text })}
+        style={styles.input}
+      />
+      {errors.pincode && <Text style={styles.error}>{errors.pincode}</Text>}
+
+      <Text style={styles.label}>Experience in Years (if any)</Text>
+      <TextInput
+        placeholder="1 Year"
+        value={formData.experience}
+        onChangeText={(text) => setFormData({ ...formData, experience: text })}
+        style={styles.input}
+      />
+      {/* Experience is optional so no error */}
+
+      <View style={styles.checkboxContainer}>
+        <TouchableOpacity
+          style={styles.checkbox}
+          onPress={() => setFormData({ ...formData, agreed: !formData.agreed })}
+        >
+          {formData.agreed && <Ionicons name="checkmark" size={18} color="#0077B6" />}
+        </TouchableOpacity>
+        <Text style={styles.checkboxLabel}>Terms & Conditions</Text>
+      </View>
+      {errors.agreed && <Text style={styles.error}>{errors.agreed}</Text>}
+
+      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+        <Text style={styles.submitButtonText}>Next</Text>
+      </TouchableOpacity>
+
+      <View style={{ marginTop: 20, alignItems: 'center' }}>
+        <Text>Already registered?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('ALoginScreen')}>
+          <Text style={{ color: '#0077B6', fontWeight: 'bold', marginTop: 5 }}>Login here</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+  );
+};
+
+export default ActivistForm;
 
 const styles = StyleSheet.create({
-  container: { padding: 20, paddingTop: 80, backgroundColor: '#fff', flexGrow: 1 },
-  title: { fontSize: 24, fontWeight: 'bold', color: '#0077B6', marginBottom: 4 },
-  subtitle: { fontSize: 16, color: '#333', marginBottom: 20 },
-  inputWrapper: { marginBottom: 16 },
-  label: { marginBottom: 4, fontWeight: '600', color: '#000' },
-  inputRow: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, paddingHorizontal: 10, borderColor: '#ccc', borderRadius: 6 },
-  input: { flex: 1, padding: 12, fontSize: 14 },
-  error: { color: 'red', fontSize: 12, marginTop: 4 },
-  submitButton: { backgroundColor: '#0077B6', paddingVertical: 14, borderRadius: 8, alignItems: 'center', marginTop: 10 },
-  submitText: { color: '#fff', fontWeight: 'bold' },
-  imagePicker: { borderWidth: 1, borderColor: '#0077B6', padding: 10, borderRadius: 6, alignItems: 'center', marginBottom: 10 }
+  container: {
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  heading: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#0077B6',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#999',
+    borderRadius: 6,
+    padding: 12,
+    marginBottom: 10,
+    fontSize: 16,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 5,
+  },
+  imagePicker: {
+    alignItems: 'center',
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 10,
+    height: 150,
+    justifyContent: 'center',
+  },
+  imagePreview: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+  },
+  error: {
+    color: 'red',
+    fontSize: 13,
+    marginBottom: 10,
+  },
+  submitButton: {
+    backgroundColor: '#0077B6',
+    padding: 15,
+    borderRadius: 8,
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  submitButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  checkbox: {
+    height: 22,
+    width: 22,
+    borderWidth: 1,
+    borderColor: '#0077B6',
+    borderRadius: 3,
+    marginRight: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkboxLabel: {
+    fontSize: 14,
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 6,
+    color: 'black',
+    marginBottom: 10,
+    paddingRight: 30,
+  },
+  inputAndroid: {
+    fontSize: 16,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 6,
+    color: 'black',
+    marginBottom: 10,
+    paddingRight: 30,
+  },
+  iconContainer: {
+    top: 15,
+    right: 10,
+  },
 });

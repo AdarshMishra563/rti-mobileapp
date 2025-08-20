@@ -1,12 +1,13 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useContext, useState } from 'react';
 import {
   FlatList,
   Image,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
-  TextInput,
 } from 'react-native';
 
 import { UserContext } from '../screens/UserContext'; 
@@ -14,8 +15,8 @@ import { UserContext } from '../screens/UserContext';
 const sources = [
   { name: 'BBC News', image: require('../Assets/Ellipse.png') },
   { name: 'CNN', image: require('../Assets/Ellipse.png') },
-  { name: 'VICE', image: require('../Assets/Ellipse.png') },
-  { name: 'NDTV', image: require('../Assets/Ellipse.png') },
+  { name: 'SCMP', image: require('../Assets/News Author (1).png') },
+  { name: 'VICE', image: require('../Assets/News Author.png') },
   { name: 'ABP News', image: require('../Assets/Ellipse.png') },
   { name: 'India Today', image: require('../Assets/Ellipse.png') },
 ];
@@ -45,12 +46,17 @@ export default function NewsSourceScreen({ navigation }) {
       <Text style={styles.title}>Choose your News Sources</Text>
 
       {/* 🔍 Search Bar */}
-      <TextInput
-        placeholder="Search News Sources"
-        style={styles.searchBar}
-        value={search}
-        onChangeText={setSearch}
-      />
+      <View style={styles.searchBar}>
+        <TextInput
+          placeholder="Search News Sources"
+          style={styles.searchInput}
+          value={search}
+          onChangeText={setSearch}
+        />
+        <TouchableOpacity>
+          <Ionicons name="search" size={22} color="#888" />
+        </TouchableOpacity>
+      </View>
 
       <FlatList
         data={filteredSources}
@@ -94,11 +100,17 @@ const styles = StyleSheet.create({
   title: { fontSize: 18, fontWeight: 'bold', marginBottom: 10 },
 
   searchBar: {
+    flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 10,
     borderRadius: 8,
     marginBottom: 20,
+    alignItems: 'center',
+  },
+  searchInput: {
+    flex: 1,
+    marginRight: 10,
   },
 
   card: {

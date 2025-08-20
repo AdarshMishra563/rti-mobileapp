@@ -24,7 +24,7 @@ export default function NewsDetail({ navigation }) {
   const toggleSave = () => setSaved((v) => !v);
 
   const openSplash = () => {
-    navigation.navigate('Splash');
+    navigation.navigate('AuthenticationScreen');
   };
 
   return (

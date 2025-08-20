@@ -81,6 +81,8 @@ export default function EditProfile({ route, navigation }) {
       bio: bioValue,
       website: normalizeWebsite(websiteValue),
       image: profileImage,
+      followers: route.params?.followers || 0,
+      following: route.params?.following || 0,
     };
 
     navigation.navigate('ProfilePreview', updatedData);

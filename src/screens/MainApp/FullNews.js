@@ -104,36 +104,27 @@ export default function FullNews() {
       </View> */}
 
       {/* Bottom Tab Navigation */}
-      <View style={styles.bottomTab}>
-        <TouchableOpacity onPress={() => navigation.navigate('FullNews')}>
-          <Ionicons name="home" size={24} color="#5956E9" />
+      <View style={styles.tabBar}>
+        <TouchableOpacity onPress={() => navigation.navigate('FullNews')} style={styles.tabItem}>
+          <Ionicons name="home-outline" size={24} color="#aaa" />
+          <Text style={styles.tabLabel}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('JoinRTIScreen')}>
+
+        <TouchableOpacity onPress={() => navigation.navigate('JoinRTIScreen')} style={styles.tabItem}>
           <Ionicons name="create-outline" size={24} color="#aaa" />
+          <Text style={styles.tabLabel}>Join RTI</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate('AddPostScreen')}
-          style={{
-            backgroundColor: '#FFD700',
-            borderRadius: 30,
-            padding: 10,
-            marginTop: -20,
-            elevation: 3,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Ionicons name="add" size={28} color="#000" />
-          <Text style={{ fontSize: 10, color: '#000', fontWeight: 'bold' }}>Add Post</Text>
-        </TouchableOpacity> */}
-        <TouchableOpacity onPress={() => navigation.navigate('AddPostScreen')}>
+        <TouchableOpacity onPress={() => navigation.navigate('AddPostScreen')} style={styles.tabItem}>
           <Ionicons name="add-circle" size={28} color="#aaa" />
-          </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('EpaperScreen')}>
-          <Ionicons name="book-outline" size={24} color="#aaa" />
+          <Text style={styles.tabLabel}>Add Post</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('ProfilePreview')}>
+        <TouchableOpacity onPress={() => navigation.navigate('EpaperScreen')} style={styles.tabItem}>
+          <Ionicons name="book-outline" size={24} color="#aaa" />
+          <Text style={styles.tabLabel}>E-Paper</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ProfilePreview')} style={styles.tabItem}>
           <Ionicons name="person" size={24} color="#aaa" />
+          <Text style={styles.tabLabel}>Profile</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -203,13 +194,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     elevation: 2,
   },
-  bottomTab: {
+  tabBar: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
-    height: 60,
+    paddingVertical: 10,
     borderTopWidth: 1,
     borderColor: '#eee',
     backgroundColor: '#fff',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  tabItem: {
+    alignItems: 'center',
+  },
+  tabLabel: {
+    fontSize: 12,
+    color: '#aaa',
+    marginTop: 2,
   },
 });

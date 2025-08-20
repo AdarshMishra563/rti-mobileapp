@@ -54,12 +54,15 @@ import RTIActivistForm from '../screens/RTIActivistForm';
 import ALoginScreen from '../screens/ALoginScreen';
 import PublishNewsScreen from '../screens/PublishNewsScreen';
 import NewsList from '../screens/NewsList';
+import AuthenticationScreen from '../screens/AuthenticationScreen';
+import CitizenVoice from '../screens/CitizenVoice';
+import StateSelections from '../screens/StateSelections';
 const Stack = createNativeStackNavigator();
 
 export default function RootNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="NewsDetail">
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Splash">
         <Stack.Screen name="Publisher" component={NewsDetail} />
         <Stack.Screen name="NewsDetail" component={Publisher} />
         <Stack.Screen name="Splash" component={Splash} />
@@ -109,6 +112,10 @@ export default function RootNavigator() {
         <Stack.Screen name="ALoginScreen" component={ALoginScreen} />
         <Stack.Screen name="PublishNewsScreen" component={PublishNewsScreen} />
         <Stack.Screen name="NewsList" component={NewsList} />
+        <Stack.Screen name="AuthenticationScreen" component={AuthenticationScreen} />
+        <Stack.Screen name="CitizenVoice" component={CitizenVoice} />
+        <Stack.Screen name="StateSelections" component={StateSelections} />
+        {/* <Stack.Screen name="UserContext" component={UserContext} /> */}
 
         
       </Stack.Navigator>
