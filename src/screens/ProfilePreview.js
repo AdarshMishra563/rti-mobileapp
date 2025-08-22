@@ -1,5 +1,5 @@
 
-
+import { Feather } from "@expo/vector-icons";
 import { Ionicons } from '@expo/vector-icons';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useContext, useEffect, useState } from 'react';
@@ -35,7 +35,7 @@ export default function ProfilePreview({ route }) {
 
   const [activeTab, setActiveTab] = useState('Recent');
 
-  
+
   const fetchProfile = async () => {
     try {
       const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODkyZTAwNmY2YmM3ZGYyMWFkYmEwYjkiLCJpYXQiOjE3NTQ0NTYwNzB9.aE3nuOHI1ZbFKOVtRdTRW0-84jXhTYqYIP_eL1ENTx0';
@@ -122,6 +122,9 @@ export default function ProfilePreview({ route }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topBar}>
+       <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Feather name="arrow-left" size={28} color="black" />
+                </TouchableOpacity>
         <Text style={styles.profileTitle}>Profile</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Setting', { ...profile })}>
           <Ionicons name="settings-outline" size={24} color="#000" />
@@ -129,29 +132,31 @@ export default function ProfilePreview({ route }) {
       </View>
 
       <View style={styles.profileSection}>
-        <Image
-          source={profile.image ? { uri: profile.image } : require('../Assets/image1.png')}
-          style={styles.profilePic}
-        />
-        <Text style={styles.name}>{profile.fullName || 'Your Name'}</Text>
-        <Text style={styles.bio}>{profile.bio}</Text>
 
-        <View style={styles.stats}>
-          <View>
-            <Text style={styles.count}>{profile.followers}</Text>
-            <Text>Followers</Text>
-          </View>
-          <View>
-            <Text style={styles.count}>{profile.following}</Text>
-            <Text>Following</Text>
-          </View>
-          <TouchableOpacity onPress={() => setActiveTab('News')}>
-            <Text style={styles.count}>{myPosts.length}</Text>
-            <Text>News</Text>
-          </TouchableOpacity>
+      <View style={styles.stats}>
+        <Image
+                source={profile.image ? { uri: profile.image } : require('../Assets/image1.png')}
+                style={styles.profilePic}
+              />
+                <View style={styles.statsData}>
+                  <Text style={styles.count}>{profile.followers}</Text>
+                  <Text>Follower</Text>
+                </View>
+                <View>
+                  <Text style={styles.count}>{profile.following}</Text>
+                  <Text>Following</Text>
+                </View>
+                <TouchableOpacity onPress={() => setActiveTab('News')}>
+                  <Text style={styles.count}>{myPosts.length}</Text>
+                  <Text>News</Text>
+                </TouchableOpacity>
+              </View>
         </View>
 
+        <View style={styles.profileBottom}>
+        <Text style={styles.name}>{profile.fullName || 'Your Name'}</Text>
         <View style={styles.btnRow}>
+
           <TouchableOpacity
             style={styles.btn}
             onPress={() => navigation.navigate('EditProfile', { ...profile })}
@@ -160,33 +165,23 @@ export default function ProfilePreview({ route }) {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              if (profile.website) {
-                const url = profile.website.startsWith('http')
-                  ? profile.website
-                  : `https://${profile.website}`;
-                Linking.openURL(url).catch(() => alert('Invalid URL'));
-              } else {
-                alert('No website link provided.');
-              }
-            }}
-          >
-            <Text style={styles.buttonText}>Website</Text>
-          </TouchableOpacity>
+                      style={styles.btn}
+                      onPress={() => navigation.navigate('EditProfile', { ...profile })}
+                    >
+                      <Text style={styles.btnText}>Bookmarks</Text>
+                    </TouchableOpacity>
         </View>
-      </View>
-
+        </View>
       <View style={styles.tabRow}>
-        <TouchableOpacity onPress={() => setActiveTab('News')}>
-          <Text style={[styles.tab, activeTab === 'News' && styles.tabActive]}>News</Text>
+        <TouchableOpacity onPress={() => setActiveTab('Pending')}>
+          <Text style={[styles.tab, activeTab === 'Pending' && styles.tabActive]}>Pending</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setActiveTab('Recent')}>
-          <Text style={[styles.tab, activeTab === 'Recent' && styles.tabActive]}>Recent</Text>
+        <TouchableOpacity onPress={() => setActiveTab('Approved')}>
+          <Text style={[styles.tab, activeTab === 'Approved' && styles.tabActive]}>Approved</Text>
         </TouchableOpacity>
       </View>
 
-      {activeTab === 'Recent' && (
+      {activeTab === 'Approved' && (
         <FlatList
           data={recentNews}
           keyExtractor={(item) => item.id}
@@ -195,7 +190,7 @@ export default function ProfilePreview({ route }) {
         />
       )}
 
-      {activeTab === 'News' && (
+      {activeTab === 'Pending' && (
         <FlatList
           data={[...myPosts].reverse()}
           keyExtractor={(item) => item.id}
@@ -204,27 +199,29 @@ export default function ProfilePreview({ route }) {
         />
       )}
 
-      <View style={styles.bottomTab}>
-        <TouchableOpacity onPress={() => navigation.navigate('FullNews')}>
-          <Ionicons name="home" size={24} color="#5956E9" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Categories')}>
-          <Ionicons name="search" size={24} color="#aaa" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Bookmark')}>
-          <Ionicons name="bookmark" size={24} color="#aaa" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('ProfilePreview')}>
-          <Ionicons name="person" size={24} color="#aaa" />
-        </TouchableOpacity>
-      </View>
+      <View style={styles.tabBar}>
+              <TouchableOpacity onPress={() => navigation.navigate('FullNews')} style={styles.tabItem}>
+                <Ionicons name="home-outline" size={24} color="#aaa" />
+                <Text style={styles.tabLabel}>Home</Text>
+              </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.fab}
-        onPress={() => navigation.navigate('AddPostScreen')}
-      >
-        <Ionicons name="add" size={30} color="#fff" />
-      </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('JoinRTIScreen')} style={styles.tabItem}>
+                <Ionicons name="create-outline" size={24} color="#aaa" />
+                <Text style={styles.tabLabel}>Join RTI</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('AddPostScreen')} style={styles.tabItem}>
+                <Ionicons name="add-circle" size={28} color="#aaa" />
+                <Text style={styles.tabLabel}>Add Post</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('EpaperScreen')} style={styles.tabItem}>
+                <Ionicons name="book-outline" size={24} color="#aaa" />
+                <Text style={styles.tabLabel}>E-Paper</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('ProfilePreview')} style={styles.tabItem}>
+                <Ionicons name="person" size={24} color="#aaa" />
+                <Text style={styles.tabLabel}>Profile</Text>
+              </TouchableOpacity>
+            </View>
     </SafeAreaView>
   );
 }
@@ -233,29 +230,39 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   topBar: {
     padding: 20,
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: '',
   },
   profileTitle: { fontSize: 18, fontWeight: '600' },
   profileSection: { alignItems: 'center', paddingHorizontal: 20 },
-  profilePic: { width: 80, height: 80, borderRadius: 40, marginBottom: 10 },
-  name: { fontSize: 18, fontWeight: 'bold' },
-  bio: { textAlign: 'center', marginVertical: 5, color: '#555' },
+  profilePic: { width: 100, height: 100, borderRadius: 50, marginBottom: 10 },
+  name: { fontSize: 18, fontWeight: 'bold', marginBottom: 15},
   stats: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '80%',
-    marginVertical: 15,
+    alignItems: 'center',
+    width: '95%',
+    marginTop: 2,
   },
+profileBottom:{
+paddingHorizontal: 20,
+marginBottom: 15,
+},
   count: { fontSize: 16, fontWeight: 'bold', textAlign: 'center' },
-  btnRow: { flexDirection: 'row', gap: 10 },
-  btn: {
-    backgroundColor: '#007bff',
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-  },
+  btnRow: { flexDirection: 'row', gap: 20 },
+
+ btn: {
+   backgroundColor: '#007bff',
+   paddingVertical: 8,
+   borderRadius: 8,
+   height: 45,
+   flex: 1,
+   alignItems: 'center',
+   justifyContent: 'center',
+ },
+
   btnText: { color: '#fff', fontWeight: '600' },
   button: {
     backgroundColor: '#007bff',
@@ -266,11 +273,32 @@ const styles = StyleSheet.create({
   buttonText: { color: '#fff', fontWeight: '600' },
   tabRow: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     paddingVertical: 10,
     borderTopWidth: 1,
     borderColor: '#eee',
+    gap:'25',
   },
+   tabBar: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      paddingVertical: 10,
+      borderTopWidth: 1,
+      borderColor: '#eee',
+      backgroundColor: '#fff',
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: 0,
+    },
+      tabItem: {
+        alignItems: 'center',
+      },
+      tabLabel: {
+        fontSize: 12,
+        color: '#aaa',
+        marginTop: 2,
+      },
   tab: { fontSize: 16, color: '#888' },
   tabActive: {
     color: '#000',

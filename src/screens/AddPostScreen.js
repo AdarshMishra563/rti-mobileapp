@@ -1,5 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from "expo-file-system";
 import { useContext, useState } from 'react';
 import {
   Alert,
@@ -25,7 +26,7 @@ export default function AddPostScreen({ navigation }) {
 
   const pickPostImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ImagePicker.MediaType.Images, // <-- updated
       allowsEditing: true,
       quality: 0.8,
     });
@@ -35,28 +36,54 @@ export default function AddPostScreen({ navigation }) {
     }
   };
 
-  const handlePostSubmit = () => {
-    if (!postImage || !heading || !tag || !category || !videoLink || !article) {
-      Alert.alert('Validation Error', 'All fields are required.');
+
+  const handlePostSubmit = async () => {
+    if (!postImage || !heading || !category || !article) {
+      Alert.alert("Validation Error", "All required fields must be filled.");
       return;
     }
 
-    const newPost = {
-      id: Date.now().toString(),
-      image: postImage,
-      title: heading,
-      tag: tag,
-      category: category,
-      videoLink: videoLink,
-      article: article,
-      author: userData?.fullName || 'Anonymous',
-      time: 'Just now',
-    };
+    try {
+      let formData = new FormData();
 
-    setUserPosts([newPost, ...userPosts]); 
-    Alert.alert('Success', 'Your post has been published!');
-    navigation.navigate('ProfilePreview'); 
+      // Attach image
+      formData.append("media", {
+        uri: postImage,
+        name: "upload.jpg",
+        type: "image/jpeg",
+      });
+
+      // Other fields
+      formData.append("headline", heading);
+      formData.append("description", article);
+      formData.append("location", "AP"); // you can replace with dynamic value
+      formData.append("category", category);
+      formData.append("language", "English");
+
+      const response = await fetch("http://34.100.231.173:3000/api/v1/news/uploadnews", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODk0M2IwNDE5OTE2NGY3MWQ1Njc1NjQiLCJpYXQiOjE3NTQ1NDQ5MDB9.k7_KXqA5a3uzjmlJU5vrImE1voqlCaq9grSt3OYqybk",
+          "Content-Type": "multipart/form-data",
+        },
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        Alert.alert("Success", "News uploaded successfully!");
+        console.log(data);
+        navigation.navigate("ProfilePreview");
+      } else {
+        console.error("Upload failed:", data);
+        Alert.alert("Error", data.message || "Something went wrong.");
+      }
+    } catch (err) {
+      console.error("Error uploading news:", err);
+      Alert.alert("Error", "Failed to upload news.");
+    }
   };
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
