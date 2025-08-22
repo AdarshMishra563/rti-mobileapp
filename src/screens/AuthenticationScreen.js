@@ -15,8 +15,10 @@ const LoginScreen = ({ navigation }) => {
   const [phone, setPhone] = useState('');
   const [agreed, setAgreed] = useState(true);
 
+  // Validate Indian 10-digit phone number starting with 6-9
   const isValidPhone = (num) => /^[6-9]\d{9}$/.test(num);
 
+  // Save token and user data locally
   const saveAuthData = async (token, user) => {
     try {
       await AsyncStorage.setItem('authToken', token);
@@ -43,10 +45,20 @@ const LoginScreen = ({ navigation }) => {
         { phone }
       );
 
+      console.log('API response:', response.data);
+
       const { token, user } = response.data;
 
+      // Save token and user info locally
       await saveAuthData(token, user);
-      navigation.replace('StateSelections');
+
+      if (!user || Object.keys(user).length === 0) {
+        // New user - navigate to OTP screen
+        navigation.navigate('OTPScreen', { phone });
+      } else {
+        // Existing user - navigate directly to StateSelection
+        navigation.replace('StateSelections');
+      }
     } catch (error) {
       console.error('Login failed:', error);
       Alert.alert(
@@ -93,6 +105,7 @@ const LoginScreen = ({ navigation }) => {
 };
 
 export default LoginScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

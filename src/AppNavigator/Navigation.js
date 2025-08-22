@@ -57,6 +57,7 @@ import NewsList from '../screens/NewsList';
 import AuthenticationScreen from '../screens/AuthenticationScreen';
 import CitizenVoice from '../screens/CitizenVoice';
 import StateSelections from '../screens/StateSelections';
+import OTPScreen from '../screens/OTPScreen';
 const Stack = createNativeStackNavigator();
 
 export default function RootNavigator() {
@@ -115,6 +116,8 @@ export default function RootNavigator() {
         <Stack.Screen name="AuthenticationScreen" component={AuthenticationScreen} />
         <Stack.Screen name="CitizenVoice" component={CitizenVoice} />
         <Stack.Screen name="StateSelections" component={StateSelections} />
+        <Stack.Screen name="OTPScreen" component={OTPScreen} />
+
         {/* <Stack.Screen name="UserContext" component={UserContext} /> */}
 
         

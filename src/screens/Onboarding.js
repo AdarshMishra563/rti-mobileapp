@@ -49,11 +49,7 @@ export default function Onboarding({ navigation }) {
     if (index < slides.length - 1) {
       ref.current?.scrollToIndex({ index: index + 1 });
     } else {
-<<<<<<< HEAD
-      navigation.replace('LanguageScreen'); 
-=======
-      navigation.replace('AuthenticationScreen'); // Navigate to the next screen
->>>>>>> 6a22e6f (Added activist form, updated screens, moved images to Assets folder)
+      navigation.replace('AuthenticationScreen' ); 
     }
   };
 

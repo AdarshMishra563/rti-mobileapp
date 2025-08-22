@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
-import {
-  View, Text, TextInput, TouchableOpacity,
-  ScrollView, StyleSheet, Image, Alert, Platform
-} from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import RNPickerSelect from 'react-native-picker-select';
 import { Ionicons } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import * as ImagePicker from 'expo-image-picker';
+import { useState } from 'react';
+import {
+  Alert,
+  Image,
+  Platform,
+  ScrollView, StyleSheet,
+  Text, TextInput, TouchableOpacity,
+  View
+} from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 
 const ReporterForm = ({ navigation }) => {
   const [formData, setFormData] = useState({
@@ -89,6 +93,7 @@ const ReporterForm = ({ navigation }) => {
       });
 
       const result = await response.json();
+      console.log('API response:', response.ok, result);
 
       if (response.ok) {
         Alert.alert('Success', 'Reporter Form Submitted!');
@@ -235,9 +240,15 @@ const ReporterForm = ({ navigation }) => {
       />
       {errors.experience && <Text style={styles.error}>{errors.experience}</Text>}
 
-      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+      {/* Button 1: Validates and submits the form, then navigates to PublishNewsScreen on success */}
+      <TouchableOpacity style={styles.submitButton} onPress={() => navigation.navigate('PublishNewsScreen')}>
         <Text style={styles.submitButtonText}>JOIN AS REPORTER</Text>
       </TouchableOpacity>
+
+      {/* Button 2: Direct navigation to PublishNewsScreen (no validation or form submission)
+      <TouchableOpacity style={styles.bottomButton} onPress={() => navigation.navigate('PublishNewsScreen')}>
+        {/* <Text style={styles.bottomButtonText}>Join as Reporter</Text> */}
+      {/* </TouchableOpacity> */} *
 
       <View style={{ marginTop: 20, alignItems: 'center' }}>
         <Text>Already registered?</Text>
@@ -304,6 +315,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   submitButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  bottomButton: {
+    backgroundColor: '#0077B6',
+    padding: 15,
+    borderRadius: 8,
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  bottomButtonText: {
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
