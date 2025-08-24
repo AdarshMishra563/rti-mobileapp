@@ -41,7 +41,7 @@ const LoginScreen = ({ navigation }) => {
 
     try {
       const response = await axios.post(
-        'http://34.100.231.173:3000/api/v1/auth/phone',
+        'https://reactspreadsheetnode-1.onrender.com/api/send-phone',
         { phone }
       );
 

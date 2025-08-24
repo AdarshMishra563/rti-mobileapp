@@ -7,61 +7,60 @@
     "icon": "./src/Assets/RTIExpress1.png",
     "scheme": "rtiapp",
     "userInterfaceStyle": "automatic",
-
     "newArchEnabled": false,
-
     "ios": {
       "supportsTablet": true
     },
-
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/Assets/RTIExpress1.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.krishlabs.rtiapp"
+      "package": "com.krishlabs.rtiapp",
+       "usesCleartextTraffic": true,
+      "networkSecurityConfig": "./network-security-config.xml"
     },
-
     "web": {
       "bundler": "metro",
       "output": "static",
       "favicon": "./src/Assets/RTIExpress1.png"
     },
-
-    "plugins": [
-      "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./src/Assets/RTIExpress1.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ],
-      "expo-localization"
-    ],
-
+  "plugins": [
+  "expo-router",
+  [
+    "expo-splash-screen",
+    {
+      "image": "./src/Assets/RTIExpress1.png",
+      "imageWidth": 200,
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    }
+  ],
+  "expo-localization",
+  [
+    "expo-build-properties",
+    {
+      "android": {
+        "useNextGenBuildSystem": true,
+        "networkSecurityConfig": "./network-security-config.xml"
+      }
+    }
+  ]
+]
+,
     "experiments": {
       "typedRoutes": true
     },
-
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "dacfb76f-59dc-486c-a693-90aa77ffe74f"
+        "projectId": "7243f076-4ba9-4774-b3f5-a5d162c1da6d"
       }
     },
-
-    "owner": "krish-labs",
-
+    "owner": "adarshmishra563",
     "runtimeVersion": {
       "policy": "appVersion"
-    },
-
-    "updates": {
-      "url": "https://u.expo.dev/dacfb76f-59dc-486c-a693-90aa77ffe74f"
     }
   }
 }

@@ -1,6 +1,4 @@
-
-import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
-import { getAuth, signInWithPhoneNumber } from 'firebase/auth';
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { app } from '../../config.js/firebase';
@@ -9,22 +7,34 @@ const auth = getAuth(app);
 
 export default function OtpVerification({ route, navigation }) {
   const { value: phoneNumber } = route.params;
-  const recaptchaVerifier = useRef(null);
-  const [code, setCode] = useState(['', '', '', '', '', '']);
   const [verification, setVerification] = useState(null);
+  const [code, setCode] = useState(['', '', '', '', '', '']);
   const [error, setError] = useState('');
   const inputRefs = useRef([...Array(6)].map(() => React.createRef()));
+  const recaptchaVerifier = useRef(null);
 
-  const sendOTP = React.useCallback(async () => {
+  const sendOTP = async () => {
     try {
-      const confirmation = await signInWithPhoneNumber(auth, `+1${phoneNumber}`, recaptchaVerifier.current);
+      // Initialize invisible reCAPTCHA
+      recaptchaVerifier.current = new RecaptchaVerifier(
+        'recaptcha-container',
+        { size: 'invisible' },
+        auth
+      );
+
+      const confirmation = await signInWithPhoneNumber(
+        auth,
+        `+1${phoneNumber}`,
+        recaptchaVerifier.current
+      );
+
       setVerification(confirmation);
       Alert.alert('OTP sent!');
     } catch (err) {
       console.error('OTP error:', err);
       Alert.alert('Error sending OTP', err.message || 'Unexpected error');
     }
-  }, [phoneNumber]);
+  };
 
   const confirmCode = async () => {
     try {
@@ -33,7 +43,7 @@ export default function OtpVerification({ route, navigation }) {
         setError('Please enter all 6 digits');
         return;
       }
-      await verification.confirm(otpCode); 
+      await verification.confirm(otpCode);
       Alert.alert('Phone verified!');
       navigation.navigate('ResetPassword', { phone: phoneNumber });
     } catch (err) {
@@ -44,15 +54,10 @@ export default function OtpVerification({ route, navigation }) {
 
   useEffect(() => {
     sendOTP();
-  }, [sendOTP]);
+  }, []);
 
   return (
     <View style={styles.container}>
-      <FirebaseRecaptchaVerifierModal
-        ref={recaptchaVerifier}
-        firebaseConfig={app.options}
-      />
-
       <Text style={styles.title}>OTP Verification</Text>
       <Text style={styles.subtitle}>Enter the OTP sent to +1{phoneNumber}</Text>
 
@@ -70,7 +75,7 @@ export default function OtpVerification({ route, navigation }) {
               newCode[index] = text;
               setCode(newCode);
               setError('');
-              
+
               if (text.length === 1 && index < 5) {
                 inputRefs.current[index + 1].current.focus();
               }
@@ -88,6 +93,9 @@ export default function OtpVerification({ route, navigation }) {
       <TouchableOpacity style={styles.button} onPress={confirmCode}>
         <Text style={styles.buttonText}>Verify</Text>
       </TouchableOpacity>
+
+      {/* Invisible reCAPTCHA container */}
+      <View id="recaptcha-container" />
     </View>
   );
 }
@@ -111,16 +119,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     backgroundColor: '#f5f5f5',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#D0D0D0',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 10,
-    fontSize: 18,
-    textAlign: 'center',
-    letterSpacing: 4,
   },
   errorInput: { borderColor: '#FF5A5F' },
   errorText: { color: '#FF5A5F', fontSize: 12, marginBottom: 10 },
