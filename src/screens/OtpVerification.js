@@ -63,7 +63,8 @@ export default function OtpVerification({ route, navigation }) {
 
       <View style={styles.otpContainer}>
         {code.map((digit, index) => (
-          <TextInput
+            <TextInput
+        placeholderTextColor='gray'
             key={index}
             ref={inputRefs.current[index]}
             style={[styles.otpInput, error && styles.errorInput]}

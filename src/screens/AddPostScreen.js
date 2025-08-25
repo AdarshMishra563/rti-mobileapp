@@ -26,7 +26,7 @@ export default function AddPostScreen({ navigation }) {
 
   const pickPostImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaType.Images, // <-- updated
+      mediaTypes: ImagePicker.MediaType.Images,
       allowsEditing: true,
       quality: 0.8,
     });
@@ -35,7 +35,6 @@ export default function AddPostScreen({ navigation }) {
       setPostImage(result.assets[0].uri);
     }
   };
-
 
   const handlePostSubmit = async () => {
     if (!postImage || !heading || !category || !article) {
@@ -56,7 +55,7 @@ export default function AddPostScreen({ navigation }) {
       // Other fields
       formData.append("headline", heading);
       formData.append("description", article);
-      formData.append("location", "AP"); // you can replace with dynamic value
+      formData.append("location", "AP");
       formData.append("category", category);
       formData.append("language", "English");
 
@@ -84,9 +83,11 @@ export default function AddPostScreen({ navigation }) {
     }
   };
 
-
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView 
+      contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}
+    >
       <Text style={styles.title}>Create New Post</Text>
 
       <TouchableOpacity style={styles.imageBox} onPress={pickPostImage}>
@@ -100,42 +101,58 @@ export default function AddPostScreen({ navigation }) {
         )}
       </TouchableOpacity>
 
-      <TextInput
-        placeholder="Add Heading"
-        value={heading}
-        onChangeText={setHeading}
-        style={styles.input}
-      />
+      <View style={styles.inputContainer}>
+          <TextInput
+        placeholderTextColor='gray'
+          placeholder="Add Heading"
+          value={heading}
+          onChangeText={setHeading}
+          style={styles.input}
+        />
+      </View>
 
-      <TextInput
-        placeholder="Add Tag"
-        value={tag}
-        onChangeText={setTag}
-        style={styles.input}
-      />
+      <View style={styles.inputContainer}>
+          <TextInput
+        placeholderTextColor='gray'
+          placeholder="Add Tag"
+          value={tag}
+          onChangeText={setTag}
+          style={styles.input}
+        />
+      </View>
 
-      <TextInput
-        placeholder="Category"
-        value={category}
-        onChangeText={setCategory}
-        style={styles.input}
-      />
+      <View style={styles.inputContainer}>
+          <TextInput
+        placeholderTextColor='gray'
+          placeholder="Category"
+          value={category}
+          onChangeText={setCategory}
+          style={styles.input}
+        />
+      </View>
 
-      <TextInput
-        placeholder="Add Video Link"
-        value={videoLink}
-        onChangeText={setVideoLink}
-        style={styles.input}
-      />
+      <View style={styles.inputContainer}>
+          <TextInput
+        placeholderTextColor='gray'
+          placeholder="Add Video Link"
+          value={videoLink}
+          onChangeText={setVideoLink}
+          style={styles.input}
+        />
+      </View>
 
-      <TextInput
-        placeholder="Write Articles"
-        value={article}
-        onChangeText={setArticle}
-        style={[styles.input, styles.articleInput]}
-        multiline
-        numberOfLines={6}
-      />
+      <View style={styles.inputContainer}>
+          <TextInput
+        placeholderTextColor='gray'
+          placeholder="Write Articles"
+          value={article}
+          onChangeText={setArticle}
+          style={[styles.input, styles.articleInput]}
+          multiline
+          numberOfLines={6}
+          textAlignVertical="top"
+        />
+      </View>
 
       <TouchableOpacity style={styles.postButton} onPress={handlePostSubmit}>
         <Text style={styles.postButtonText}>POST</Text>
@@ -146,8 +163,8 @@ export default function AddPostScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
+    flexGrow: 1,
     padding: 20,
-    paddingBottom: 40,
     backgroundColor: '#fff',
   },
   title: {
@@ -155,6 +172,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
+    color: '#333',
   },
   imageBox: {
     backgroundColor: '#f5f5f5',
@@ -163,9 +181,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
   },
   imagePlaceholder: {
     alignItems: 'center',
+    justifyContent: 'center',
   },
   imageText: {
     color: '#aaa',
@@ -177,23 +199,30 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 10,
   },
-  input: {
+  inputContainer: {
+    marginBottom: 15,
+    width: '100%',
+  },
+      input: {
+    color:"black",
     backgroundColor: '#f9f9f9',
     borderRadius: 10,
     padding: 14,
-    marginBottom: 15,
     fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
   },
   articleInput: {
-    height: 120,
+    height: 150,
     textAlignVertical: 'top',
   },
   postButton: {
     backgroundColor: '#007bff',
-    padding: 14,
+    padding: 16,
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 10,
+    marginBottom: 20,
   },
   postButtonText: {
     color: '#fff',

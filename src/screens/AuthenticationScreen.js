@@ -75,7 +75,9 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.subtitle}>Signup to get Started</Text>
 
         <Text style={styles.label}>Mobile Number*</Text>
-        <TextInput
+          <TextInput
+        placeholderTextColor='gray'
+       
           placeholder="Enter your mobile number"
           keyboardType="number-pad"
           value={phone}
@@ -132,7 +134,8 @@ const styles = StyleSheet.create({
     color: '#111827',
     marginBottom: 8,
   },
-  input: {
+      input: {
+    color:"black",
     borderWidth: 1,
     borderColor: '#D1D5DB',
     borderRadius: 8,

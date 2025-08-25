@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     borderColor: '#eee',
   },
   optionLeft: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  optionText: { fontSize: 16 },
+  optionText: { color: '#1b1a1aff',fontSize: 16 },
   optionRightText: { color: '#888', fontSize: 14 },
   modalContainer: {
     flex: 1,

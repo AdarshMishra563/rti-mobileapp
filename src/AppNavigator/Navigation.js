@@ -58,10 +58,18 @@ import AuthenticationScreen from '../screens/AuthenticationScreen';
 import CitizenVoice from '../screens/CitizenVoice';
 import StateSelections from '../screens/StateSelections';
 import OTPScreen from '../screens/OTPScreen';
+import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StatusBar } from 'react-native';
 const Stack = createNativeStackNavigator();
 
 export default function RootNavigator() {
+
+  const insets=useSafeAreaInsets();
   return (
+
+    
+      <SafeAreaView edges={['top','left','right']} style={{flex:1,paddingBottom:insets.bottom}}>
+        <StatusBar backgroundColor='white' barStyle='dark-content'/>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Splash">
         <Stack.Screen name="Publisher" component={NewsDetail} />
@@ -122,7 +130,7 @@ export default function RootNavigator() {
 
         
       </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer></SafeAreaView>
   );
 }
 

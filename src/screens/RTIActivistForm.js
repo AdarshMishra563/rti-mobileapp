@@ -119,7 +119,8 @@ const ActivistForm = ({ navigation }) => {
       {errors.media && <Text style={styles.error}>{errors.media}</Text>}
 
       <Text style={styles.label}>Full Name*</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="Wilson Franci"
         value={formData.name}
         onChangeText={(text) => setFormData({ ...formData, name: text })}
@@ -165,7 +166,8 @@ const ActivistForm = ({ navigation }) => {
       {errors.gender && <Text style={styles.error}>{errors.gender}</Text>}
 
       <Text style={styles.label}>Phone Number*</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="+91 98765 43210"
         keyboardType="phone-pad"
         value={formData.phone}
@@ -175,7 +177,8 @@ const ActivistForm = ({ navigation }) => {
       {errors.phone && <Text style={styles.error}>{errors.phone}</Text>}
 
       <Text style={styles.label}>Email Address*</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="example@youremail.com"
         keyboardType="email-address"
         value={formData.email}
@@ -185,7 +188,8 @@ const ActivistForm = ({ navigation }) => {
       {errors.email && <Text style={styles.error}>{errors.email}</Text>}
 
       <Text style={styles.label}>Address*</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="D.No 1/1/1234, Area Name, District, State"
         value={formData.address}
         onChangeText={(text) => setFormData({ ...formData, address: text })}
@@ -194,7 +198,8 @@ const ActivistForm = ({ navigation }) => {
       {errors.address && <Text style={styles.error}>{errors.address}</Text>}
 
       <Text style={styles.label}>Aadhar Number*</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="1111-2222-3333"
         value={formData.aadhar}
         maxLength={12}
@@ -222,7 +227,8 @@ const ActivistForm = ({ navigation }) => {
       {errors.designation && <Text style={styles.error}>{errors.designation}</Text>}
 
       <Text style={styles.label}>Pincode*</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="515 201"
         value={formData.pincode}
         onChangeText={(text) => setFormData({ ...formData, pincode: text })}
@@ -231,7 +237,8 @@ const ActivistForm = ({ navigation }) => {
       {errors.pincode && <Text style={styles.error}>{errors.pincode}</Text>}
 
       <Text style={styles.label}>Experience in Years (if any)</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="1 Year"
         value={formData.experience}
         onChangeText={(text) => setFormData({ ...formData, experience: text })}
@@ -278,7 +285,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
   },
-  input: {
+      input: {
+    color:"black",
     borderWidth: 1,
     borderColor: '#999',
     borderRadius: 6,

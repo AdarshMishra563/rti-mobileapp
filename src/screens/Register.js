@@ -32,7 +32,8 @@ export default function Register() {
       <Text style={styles.header}>Create Account</Text>
 
       <Text style={styles.label}>Email</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="Enter your email"
         value={email}
         onChangeText={setEmail}
@@ -42,7 +43,8 @@ export default function Register() {
       />
 
       <Text style={styles.label}>Password</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="Enter your password"
         value={password}
         onChangeText={setPassword}
@@ -65,7 +67,8 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: '#fff' },
   header: { fontSize: 28, fontWeight: 'bold', marginBottom: 20, color: '#2F6BFF' },
   label: { fontSize: 14, color: '#555', marginBottom: 6 },
-  input: {
+      input: {
+    color:"black",
     borderWidth: 1,
     borderColor: '#D0D0D0',
     borderRadius: 8,

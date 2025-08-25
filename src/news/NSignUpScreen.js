@@ -76,14 +76,16 @@ export default function NSignUpScreen() {
     <View style={styles.container}>
       <Text style={styles.header}>Sign Up</Text>
 
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         style={styles.input}
         placeholder="Full Name"
         value={fullName}
         onChangeText={setFullName}
       />
 
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         style={styles.input}
         placeholder="Email"
         keyboardType="email-address"
@@ -91,7 +93,8 @@ export default function NSignUpScreen() {
         onChangeText={setEmail}
       />
 
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         style={styles.input}
         placeholder="Phone"
         keyboardType="phone-pad"
@@ -99,7 +102,8 @@ export default function NSignUpScreen() {
         onChangeText={setPhone}
       />
 
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         style={styles.input}
         placeholder="Password"
         secureTextEntry
@@ -149,7 +153,8 @@ export default function NSignUpScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, backgroundColor: '#fff' },
   header: { fontSize: 32, fontWeight: 'bold', color: '#2F6BFF', marginBottom: 24, textAlign: 'center' },
-  input: {
+      input: {
+    color:"black",
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,

@@ -106,8 +106,8 @@ export default function FullNews() {
       {/* Bottom Tab Navigation */}
       <View style={styles.tabBar}>
         <TouchableOpacity onPress={() => navigation.navigate('FullNews')} style={styles.tabItem}>
-          <Ionicons name="home-outline" size={24} color="#aaa" />
-          <Text style={styles.tabLabel}>Home</Text>
+          <Ionicons name="home" size={24} color="#007AFF" />
+          <Text style={[styles.tabLabel, styles.tabLabelActive]}>Home</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('JoinRTIScreen')} style={styles.tabItem}>
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   headerImage: { width: '100%', height: 300, resizeMode: 'cover' },
   topIcons: {
     position: 'absolute',
-    top: 50,
+    top: 15,
     left: 20,
     right: 20,
     flexDirection: 'row',
@@ -213,5 +213,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#aaa',
     marginTop: 2,
+  },
+  tabLabelActive: {
+    color: '#007AFF',
   },
 });

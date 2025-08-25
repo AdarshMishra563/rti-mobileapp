@@ -98,7 +98,8 @@ export default function NotificationsScreen() {
       {/* Search Bar */}
       <View style={styles.searchBar}>
         <Ionicons name="search" size={18} color="#aaa" style={{ marginRight: 8 }} />
-        <TextInput placeholder="Search News" style={styles.searchInput} />
+          <TextInput
+        placeholderTextColor='gray' placeholder="Search News" style={styles.searchInput} />
       </View>
 
       <Text style={styles.sectionTitle}>Notifications</Text>
@@ -140,7 +141,7 @@ const Tab = ({ icon, label }) => (
 );
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingHorizontal: 16, paddingTop: 40, backgroundColor: '#fff' },
+  container: { flex: 1, paddingHorizontal: 16, paddingTop: 16, backgroundColor: '#fff' },
 
   header: {
     flexDirection: 'row',

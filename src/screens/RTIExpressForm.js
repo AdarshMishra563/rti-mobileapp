@@ -120,7 +120,8 @@ const ReporterForm = ({ navigation }) => {
       {errors.media && <Text style={styles.error}>{errors.media}</Text>}
 
       <Text style={styles.label}>Full Name*</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="Wilson Franc"
         value={formData.name}
         onChangeText={(text) => setFormData({ ...formData, name: text })}
@@ -166,7 +167,8 @@ const ReporterForm = ({ navigation }) => {
       {errors.gender && <Text style={styles.error}>{errors.gender}</Text>}
 
       <Text style={styles.label}>Phone Number*</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="+91 98765 43210"
         keyboardType="phone-pad"
         value={formData.phone}
@@ -176,7 +178,8 @@ const ReporterForm = ({ navigation }) => {
       {errors.phone && <Text style={styles.error}>{errors.phone}</Text>}
 
       <Text style={styles.label}>Email Address*</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="example@youremail.com"
         keyboardType="email-address"
         value={formData.email}
@@ -186,7 +189,8 @@ const ReporterForm = ({ navigation }) => {
       {errors.email && <Text style={styles.error}>{errors.email}</Text>}
 
       <Text style={styles.label}>Address*</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="123 Main St, City"
         value={formData.address}
         onChangeText={(text) => setFormData({ ...formData, address: text })}
@@ -195,7 +199,8 @@ const ReporterForm = ({ navigation }) => {
       {errors.address && <Text style={styles.error}>{errors.address}</Text>}
 
       <Text style={styles.label}>Aadhar Number*</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="1234-5678-9012"
         value={formData.aadhar}
         maxLength={12}
@@ -223,7 +228,8 @@ const ReporterForm = ({ navigation }) => {
       {errors.designation && <Text style={styles.error}>{errors.designation}</Text>}
 
       <Text style={styles.label}>Pincode*</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="560001"
         value={formData.pincode}
         onChangeText={(text) => setFormData({ ...formData, pincode: text })}
@@ -232,7 +238,8 @@ const ReporterForm = ({ navigation }) => {
       {errors.pincode && <Text style={styles.error}>{errors.pincode}</Text>}
 
       <Text style={styles.label}>Experience*</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="e.g. 2 years or 0"
         value={formData.experience}
         onChangeText={(text) => setFormData({ ...formData, experience: text })}
@@ -248,7 +255,7 @@ const ReporterForm = ({ navigation }) => {
       {/* Button 2: Direct navigation to PublishNewsScreen (no validation or form submission)
       <TouchableOpacity style={styles.bottomButton} onPress={() => navigation.navigate('PublishNewsScreen')}>
         {/* <Text style={styles.bottomButtonText}>Join as Reporter</Text> */}
-      {/* </TouchableOpacity> */} *
+      {/* </TouchableOpacity> */} 
 
       <View style={{ marginTop: 20, alignItems: 'center' }}>
         <Text>Already registered?</Text>
@@ -274,7 +281,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
   },
-  input: {
+      input: {
+    color:"black",
     borderWidth: 1,
     borderColor: '#999',
     borderRadius: 6,

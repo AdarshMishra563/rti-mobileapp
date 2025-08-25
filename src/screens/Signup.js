@@ -35,7 +35,8 @@ export default function Signup() {
       <Text style={styles.subtitle}>Let’s get started</Text>
 
       <Text style={styles.label}>Email</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -45,7 +46,8 @@ export default function Signup() {
       />
 
       <Text style={styles.label}>Password</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         value={password}
         onChangeText={setPassword}
         secureTextEntry
@@ -106,7 +108,8 @@ const styles = StyleSheet.create({
   hello: { fontSize: 32, fontWeight: 'bold', color: '#2F6BFF', marginTop: 40 },
   subtitle: { fontSize: 16, color: '#777', marginTop: 4, marginBottom: 24 },
   label: { fontSize: 14, color: '#555', marginBottom: 6 },
-  input: {
+      input: {
+    color:"black",
     borderWidth: 1,
     borderColor: '#D0D0D0',
     borderRadius: 8,

@@ -36,7 +36,7 @@ export default function JoinRTIScreen({ navigation }) {
         style={styles.option}
         onPress={() => navigation.navigate('CitizenVoice')}
       >
-        <Ionicons name="voice-outline" size={24} color="#000" />
+        <Ionicons name="people-circle" size={24} color="#000" />
         <Text style={styles.optionText}>Citizen Voice</Text>
         <Ionicons name="chevron-forward" size={24} color="#000" />
       </TouchableOpacity>
@@ -45,12 +45,13 @@ export default function JoinRTIScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex:1, padding: 20, backgroundColor: '#fff' },
-  header: {
+  container: { flex:1, backgroundColor: '#fff' },
+  header: { padding: 20,paddingBottom:10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 30,
+    borderBottomWidth:StyleSheet.hairlineWidth,
+    borderBottomColor:"gray"
   },
   backBtn: {
     padding: 4,
@@ -63,13 +64,13 @@ const styles = StyleSheet.create({
   option: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 18,
+    padding: 20,
     borderBottomWidth: 1,
     borderColor: '#ccc',
   },
   optionText: {
     flex: 1,
     marginLeft: 12,
-    fontSize: 16,
+    fontSize: 16,color: '#1b1a1aff'
   },
 });

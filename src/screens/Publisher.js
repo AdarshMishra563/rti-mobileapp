@@ -143,7 +143,8 @@ export default function Publisher({ route, navigation }) {
       {/* Search */}
       <View style={styles.search}>
         <Ionicons name="search" size={18} color="#aaa" />
-        <TextInput placeholder='Search "News"' style={styles.searchInput} />
+          <TextInput
+        placeholderTextColor='gray' placeholder='Search "News"' style={styles.searchInput} />
       </View>
 
       {/* News List */}

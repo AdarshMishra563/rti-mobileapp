@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 40,
+    marginTop: 10,
   },
   card: {
     width: width * 0.4,
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 10,
   },
   nextText: {
     color: '#fff',

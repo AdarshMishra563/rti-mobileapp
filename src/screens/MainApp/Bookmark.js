@@ -79,7 +79,8 @@ export default function BookmarkScreen() {
 
       {/* Search bar */}
       <View style={styles.searchRow}>
-        <TextInput
+          <TextInput
+        placeholderTextColor='gray'
           style={styles.searchInput}
           placeholder="Search"
           placeholderTextColor="#999"
@@ -128,7 +129,7 @@ export default function BookmarkScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: 10,
     paddingHorizontal: 16,
     backgroundColor: '#fff',
   },

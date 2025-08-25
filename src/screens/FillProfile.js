@@ -136,7 +136,8 @@ function Input({ label, value, onChangeText, icon, keyboardType = 'default' }) {
   return (
     <View style={styles.inputWrapper}>
       <Ionicons name={icon} size={20} color="#888" style={styles.icon} />
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder={label}
         style={styles.input}
         value={value}
@@ -171,7 +172,8 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   icon: { marginRight: 10 },
-  input: { flex: 1, fontSize: 16 },
+      input: {
+    color:"black", flex: 1, fontSize: 16 },
   nextBtn: {
     marginTop: 20,
     backgroundColor: '#007bff',

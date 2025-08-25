@@ -51,7 +51,8 @@ export default function ResetPassword({ navigation }) {
       <Text style={styles.subtitle}>Create a new password below</Text>
 
       <Text style={styles.label}>New Password</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         value={password}
         onChangeText={setPassword}
         secureTextEntry
@@ -60,7 +61,8 @@ export default function ResetPassword({ navigation }) {
       />
 
       <Text style={styles.label}>Confirm Password</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         value={confirm}
         onChangeText={setConfirm}
         secureTextEntry
@@ -81,7 +83,8 @@ const styles = StyleSheet.create({
   subtitle: { fontSize: 14, color: '#777', marginVertical: 10 },
 
   label: { fontSize: 14, color: '#555', marginTop: 20 },
-  input: {
+      input: {
+    color:"black",
     borderWidth: 1,
     borderColor: '#D0D0D0',
     borderRadius: 8,

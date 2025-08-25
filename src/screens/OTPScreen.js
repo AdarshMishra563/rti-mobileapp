@@ -23,7 +23,8 @@ export default function OTPScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>OTP Verification</Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         style={styles.input}
         placeholder="Enter 6-digit OTP"
         keyboardType="numeric"
@@ -41,7 +42,8 @@ export default function OTPScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, justifyContent: 'center', backgroundColor: '#fff' },
   title: { fontSize: 24, marginBottom: 20, textAlign: 'center' },
-  input: {
+      input: {
+    color:"black",
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,

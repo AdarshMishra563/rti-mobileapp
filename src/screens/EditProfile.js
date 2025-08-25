@@ -128,7 +128,8 @@ export default function EditProfile({ route, navigation }) {
           {/* Username */}
           <View style={styles.inputWrapper}>
             <Text style={styles.inputLabel}>Username</Text>
-            <TextInput
+              <TextInput
+        placeholderTextColor='gray'
               style={styles.inputBox}
               value={usernameValue}
               onChangeText={setUsername}
@@ -140,7 +141,8 @@ export default function EditProfile({ route, navigation }) {
           {/* Full Name */}
           <View style={styles.inputWrapper}>
             <Text style={styles.inputLabel}>Full Name</Text>
-            <TextInput
+              <TextInput
+        placeholderTextColor='gray'
               style={styles.inputBox}
               value={nameValue}
               onChangeText={setFullName}
@@ -152,7 +154,8 @@ export default function EditProfile({ route, navigation }) {
           {/* Email */}
           <View style={styles.inputWrapper}>
             <Text style={styles.inputLabel}>Email Address*</Text>
-            <TextInput
+              <TextInput
+        placeholderTextColor='gray'
               style={styles.inputBox}
               value={emailValue}
               onChangeText={setEmail}
@@ -167,7 +170,8 @@ export default function EditProfile({ route, navigation }) {
           {/* Phone */}
           <View style={styles.inputWrapper}>
             <Text style={styles.inputLabel}>Phone Number*</Text>
-            <TextInput
+              <TextInput
+        placeholderTextColor='gray'
               style={styles.inputBox}
               value={phoneValue}
               onChangeText={setPhone}
@@ -181,7 +185,8 @@ export default function EditProfile({ route, navigation }) {
           {/* Bio */}
           <View style={styles.inputWrapper}>
             <Text style={styles.inputLabel}>Bio</Text>
-            <TextInput
+              <TextInput
+        placeholderTextColor='gray'
               style={[styles.inputBox, { height: 80 }]}
               value={bioValue}
               onChangeText={setBio}
@@ -194,7 +199,8 @@ export default function EditProfile({ route, navigation }) {
           {/* Website */}
           <View style={styles.inputWrapper}>
             <Text style={styles.inputLabel}>Website</Text>
-            <TextInput
+              <TextInput
+        placeholderTextColor='gray'
               style={styles.inputBox}
               value={websiteValue}
               onChangeText={setWebsite}
@@ -219,7 +225,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 50,
+    marginTop: 10,
     paddingHorizontal: 20,
     marginBottom: 20,
   },

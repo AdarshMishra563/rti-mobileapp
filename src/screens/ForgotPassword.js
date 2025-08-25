@@ -94,7 +94,8 @@ export default function ForgotPassword({ navigation }) {
       <Text style={styles.label}>
         {method === 'email' ? 'Email Address' : 'Phone Number'}
       </Text>
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         value={inputValue}
         onChangeText={(text) => {
           setInputValue(text);
@@ -138,7 +139,8 @@ const styles = StyleSheet.create({
   switchTextActive: { color: '#fff', fontWeight: '600' },
 
   label: { fontSize: 14, color: '#333', marginBottom: 6 },
-  input: {
+      input: {
+    color:"black",
     borderWidth: 1,
     borderColor: '#D0D0D0',
     borderRadius: 8,

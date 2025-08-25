@@ -66,33 +66,38 @@ export default function FeedbackScreen({ navigation }) {
       </View>
 
       {/* Form */}
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="Type your name"
         value={name}
         onChangeText={setName}
         style={styles.input}
       />
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="Mobile Number"
         value={mobile}
         onChangeText={setMobile}
         keyboardType="phone-pad"
         style={styles.input}
       />
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="e-mail ID"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
         style={styles.input}
       />
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="Write your Feedback"
         value={feedback}
         onChangeText={setFeedback}
         style={styles.input}
       />
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="Please tell us your experience"
         value={experience}
         onChangeText={setExperience}
@@ -142,7 +147,8 @@ const styles = StyleSheet.create({
   },
   headerTitle: { fontSize: 18, fontWeight: 'bold' },
 
-  input: {
+      input: {
+    color:"black",
     borderWidth: 1,
     borderColor: '#DDD',
     borderRadius: 8,

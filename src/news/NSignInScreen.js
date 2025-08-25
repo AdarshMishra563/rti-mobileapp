@@ -63,14 +63,16 @@ export default function NSignInScreen() {
       />
       <Text style={styles.logoText}>News2Day</Text>
 
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="Phone / email"
         style={styles.input}
         value={input}
         onChangeText={setInput}
         keyboardType="default"
       />
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="Password"
         style={styles.input}
         value={password}
@@ -128,7 +130,8 @@ const styles = StyleSheet.create({
     color: '#2F6BFF',
     marginBottom: 40,
   },
-  input: {
+      input: {
+    color:"black",
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,

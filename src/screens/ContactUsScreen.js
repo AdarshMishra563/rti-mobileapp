@@ -39,26 +39,30 @@ export default function ContactUsScreen() {
 
       <View style={styles.section}>
         <Text style={styles.heading}>Send Us a Message</Text>
-        <TextInput
+          <TextInput
+        placeholderTextColor='gray'
           style={styles.input}
           placeholder="Your Name"
           value={form.name}
           onChangeText={(text) => handleChange('name', text)}
         />
-        <TextInput
+          <TextInput
+        placeholderTextColor='gray'
           style={styles.input}
           placeholder="Your Email"
           value={form.email}
           keyboardType="email-address"
           onChangeText={(text) => handleChange('email', text)}
         />
-        <TextInput
+          <TextInput
+        placeholderTextColor='gray'
           style={styles.input}
           placeholder="Subject"
           value={form.subject}
           onChangeText={(text) => handleChange('subject', text)}
         />
-        <TextInput
+          <TextInput
+        placeholderTextColor='gray'
           style={[styles.input, styles.textarea]}
           placeholder="Your Message..."
           multiline
@@ -109,7 +113,8 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginVertical: 5,
   },
-  input: {
+      input: {
+    color:"black",
     backgroundColor: '#f1f1f1',
     borderRadius: 6,
     padding: 10,

@@ -49,14 +49,16 @@ export default function PublishNewsScreen({ navigation }) {
         )}
       </TouchableOpacity>
 
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="News title"
         style={styles.titleInput}
         value={title}
         onChangeText={setTitle}
       />
 
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="District / City / County"
         style={styles.districtInput}
         value={district}

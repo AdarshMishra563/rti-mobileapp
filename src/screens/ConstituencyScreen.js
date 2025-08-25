@@ -38,7 +38,8 @@ export default function ConstituencyScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Select your District</Text>
 
-      <TextInput
+        <TextInput
+        placeholderTextColor='gray'
         placeholder="Search district"
         style={styles.search}
         value={search}

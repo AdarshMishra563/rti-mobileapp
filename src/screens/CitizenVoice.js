@@ -3,37 +3,42 @@ import React, { useState } from 'react';
 import {
     SafeAreaView,
     StyleSheet,
-    Text, TouchableOpacity,
+    Text, 
+    TouchableOpacity,
     View
 } from 'react-native';
 
 const CitizenVoiceScreen = ({ navigation }) => {
-
     const [selectedCategory, setSelectedCategory] = useState('Aadhar');
 
     const categories = [
-        { key: 'Aadhar', label: 'Aadhar Issue', icon: <Ionicons name="videocam" size={40} color="#000" /> },
-        { key: 'Govt', label: 'Govt office', icon: <MaterialCommunityIcons name="office-building" size={40} color="#000" /> },
-        { key: 'Municipal', label: 'Municipal', icon: <FontAwesome5 name="archway" size={40} color="#000" /> },
+        { key: 'Aadhar', label: 'Aadhar Issue', iconName: 'videocam', iconLib: 'Ionicons' },
+        { key: 'Govt', label: 'Govt office', iconName: 'office-building', iconLib: 'MaterialCommunityIcons' },
+        { key: 'Municipal', label: 'Municipal', iconName: 'archway', iconLib: 'FontAwesome5' },
     ];
 
-    const bottomTabs = [
-        { key: 'Home', label: 'Home', icon: <Ionicons name="home" size={24} /> },
-        { key: 'JoinRTI', label: 'Join RTI', icon: <Ionicons name="create-outline" size={24} /> },
-        { key: 'AddPost', label: 'Add Post', icon: <Ionicons name="add-circle-outline" size={24} /> },
-        { key: 'EPaper', label: 'E-Paper', icon: <Ionicons name="book-outline" size={24} /> },
-        { key: 'Profile', label: 'Profile', icon: <Ionicons name="person-outline" size={24} /> },
-    ];
+    const renderIcon = (iconLib, iconName, size, color) => {
+        switch(iconLib) {
+            case 'Ionicons':
+                return <Ionicons name={iconName} size={size} color={color} />;
+            case 'MaterialCommunityIcons':
+                return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
+            case 'FontAwesome5':
+                return <FontAwesome5 name={iconName} size={size} color={color} />;
+            default:
+                return <Ionicons name="help-circle" size={size} color={color} />;
+        }
+    };
 
     return (
         <SafeAreaView style={styles.container}>
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Ionicons name="arrow-back" size={24} />
+                    <Ionicons name="arrow-back" size={24} color="#000" />
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>Citizen Voice</Text>
-                <View style={{ width: 24 }} /> {/* placeholder for right spacing */}
+                <View style={{ width: 24 }} />
             </View>
 
             {/* Categories */}
@@ -48,7 +53,7 @@ const CitizenVoiceScreen = ({ navigation }) => {
                             activeOpacity={0.7}
                         >
                             <View style={styles.iconWrapper}>
-                                {cat.icon}
+                                {renderIcon(cat.iconLib, cat.iconName, 40, '#000')}
                             </View>
                             <Text style={styles.categoryLabel}>{cat.label}</Text>
                         </TouchableOpacity>
@@ -56,50 +61,38 @@ const CitizenVoiceScreen = ({ navigation }) => {
                 })}
             </View>
 
-            {/* Bottom Tabs */}
-            <View style={styles.bottomTabsContainer}>
-                {bottomTabs.map((tab) => {
-                    const isActive = tab.key === 'Home'; // Home tab active
-                    return (
-                        <TouchableOpacity
-                            key={tab.key}
-                            style={styles.tabItem}
-                            onPress={() => {
-                                // You can add navigation here e.g.
-                                // navigation.navigate(tab.key + 'Screen');
-                            }}
-                            activeOpacity={0.7}
-                        >
-                            {React.cloneElement(tab.icon, {
-                                color: isActive ? '#0077B6' : '#999',
-                            })}
-                            <Text style={[styles.tabLabel, isActive && { color: '#0077B6' }]}>{tab.label}</Text>
-                        </TouchableOpacity>
-                    );
-                })}
+            {/* Content Area */}
+            <View style={styles.content}>
+                <Text style={styles.selectedCategoryText}>
+                    Selected Category: {selectedCategory}
+                </Text>
+                {/* Add your content based on selected category here */}
             </View>
 
-            {/* Fixed Bottom Tab Bar */}
+            {/* Bottom Tab Bar */}
             <View style={styles.tabBar}>
                 <TouchableOpacity onPress={() => navigation.navigate('FullNews')} style={styles.tabItem}>
                     <Ionicons name="home-outline" size={24} color="#aaa" />
                     <Text style={styles.tabLabel}>Home</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('AddPostScreen')} style={styles.tabItem}>
-                    <Ionicons name="add-circle" size={28} color="#aaa" />
-                    <Text style={styles.tabLabel}>Add Post</Text>
-                </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('JoinRTIScreen')} style={styles.tabItem}>
                     <Ionicons name="create-outline" size={24} color="#aaa" />
                     <Text style={styles.tabLabel}>Join RTI</Text>
                 </TouchableOpacity>
+                
+                <TouchableOpacity onPress={() => navigation.navigate('AddPostScreen')} style={styles.tabItem}>
+                    <Ionicons name="add-circle" size={28} color="#aaa" />
+                    <Text style={styles.tabLabel}>Add Post</Text>
+                </TouchableOpacity>
+                
                 <TouchableOpacity onPress={() => navigation.navigate('EpaperScreen')} style={styles.tabItem}>
                     <Ionicons name="book-outline" size={24} color="#aaa" />
                     <Text style={styles.tabLabel}>E-Paper</Text>
                 </TouchableOpacity>
+                
                 <TouchableOpacity onPress={() => navigation.navigate('ProfilePreview')} style={styles.tabItem}>
-                    <Ionicons name="person" size={24} color="#aaa" />
+                    <Ionicons name="person-outline" size={24} color="#aaa" />
                     <Text style={styles.tabLabel}>Profile</Text>
                 </TouchableOpacity>
             </View>
@@ -141,8 +134,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        elevation: 6, // for Android shadow
-        shadowColor: '#000', // iOS shadow
+        elevation: 6,
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.2,
         shadowRadius: 4,
@@ -160,17 +153,16 @@ const styles = StyleSheet.create({
         color: '#666',
         textAlign: 'center',
     },
-    bottomTabsContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        height: 56,
-        borderTopColor: '#ddd',
-        borderTopWidth: 1,
+    content: {
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
-        position: 'absolute',
-        bottom: 0,
-        width: '100%',
-        backgroundColor: '#fff',
+        padding: 20,
+    },
+    selectedCategoryText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#333',
     },
     tabBar: {
         flexDirection: 'row',
@@ -179,10 +171,6 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderColor: '#eee',
         backgroundColor: '#fff',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
     },
     tabItem: {
         alignItems: 'center',
